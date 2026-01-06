@@ -1,0 +1,17 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" fill="#F0F9FF"/>
+  <!-- 上層餅乾 -->
+  <rect x="40" y="50" width="120" height="30" rx="6" fill="#FBBF24" stroke="#D97706" stroke-width="1"/>
+  <!-- 夾心 -->
+  <rect x="45" y="80" width="110" height="15" fill="#F87171"/>
+  <!-- 下層餅乾 -->
+  <rect x="40" y="95" width="120" height="30" rx="6" fill="#FBBF24" stroke="#D97706" stroke-width="1"/>
+  <!-- 餅乾上的小洞 -->
+  <circle cx="70" cy="65" r="2" fill="#D97706"/>
+  <circle cx="100" cy="65" r="2" fill="#D97706"/>
+  <circle cx="130" cy="65" r="2" fill="#D97706"/>
+  <circle cx="70" cy="110" r="2" fill="#D97706"/>
+  <circle cx="100" cy="110" r="2" fill="#D97706"/>
+  <circle cx="130" cy="110" r="2" fill="#D97706"/>
+  <text x="100" y="170" text-anchor="middle" fill="#1E40AF" font-family="Arial, sans-serif" font-size="12" font-weight="bold">蘇打夾心</text>
+</svg>

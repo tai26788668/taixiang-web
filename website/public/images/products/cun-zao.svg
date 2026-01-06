@@ -1,0 +1,9 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" fill="#FEF3C7"/>
+  <ellipse cx="100" cy="100" rx="60" ry="40" fill="#D97706"/>
+  <ellipse cx="100" cy="95" rx="50" ry="30" fill="#F59E0B"/>
+  <ellipse cx="100" cy="90" rx="40" ry="20" fill="#FBBF24"/>
+  <circle cx="85" cy="85" r="3" fill="#92400E"/>
+  <circle cx="115" cy="85" r="3" fill="#92400E"/>
+  <text x="100" y="170" text-anchor="middle" fill="#92400E" font-family="Arial, sans-serif" font-size="14" font-weight="bold">寸棗</text>
+</svg>

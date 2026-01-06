@@ -1,0 +1,164 @@
+{
+  "system": {
+    "title": "員工專區"
+  },
+  "nav": {
+    "leaveApplication": "請假申請",
+    "leaveRecords": "請假紀錄",
+    "leaveManagement": "請假管理",
+    "userManagement": "權限資料"
+  },
+  "auth": {
+    "login": "登入",
+    "logout": "登出",
+    "employeeId": "工號",
+    "password": "密碼",
+    "loginButton": "登入",
+    "loginFailed": "登入失敗",
+    "invalidCredentials": "工號或密碼錯誤",
+    "pleaseLogin": "請輸入您的工號和密碼登入"
+  },
+  "common": {
+    "welcome": "歡迎",
+    "loading": "載入中...",
+    "submit": "送出",
+    "cancel": "取消",
+    "save": "儲存",
+    "delete": "刪除",
+    "edit": "編輯",
+    "search": "搜尋",
+    "reset": "重設",
+    "confirm": "確認",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步",
+    "close": "關閉",
+    "yes": "是",
+    "no": "否",
+    "dismiss": "關閉",
+    "all": "全部"
+  },
+  "leave": {
+    "application": {
+      "title": "請假申請",
+      "employeeId": "工號",
+      "name": "姓名",
+      "leaveType": "假別",
+      "leaveDate": "請假日期",
+      "startDate": "開始日期",
+      "startTime": "開始時間",
+      "endDate": "結束日期",
+      "endTime": "結束時間",
+      "leaveHours": "請假時數",
+      "reason": "事由",
+      "submit": "提交申請",
+      "success": "請假申請已成功提交",
+      "error": "請假申請提交失敗",
+      "selectStartTime": "請選擇開始時間",
+      "selectEndTime": "請選擇結束時間",
+      "selectTime": "請選擇時間",
+      "initializingTimeSelector": "初始化時間選擇器...",
+      "timeSelectorLoadFailed": "時間選擇器載入失敗",
+      "typing": "輸入中",
+      "keyboardInstructions": "使用方向鍵選擇時間，或直接輸入數字快速定位。按 Escape 清除輸入。",
+      "startTimeNextDay": "開始時間為隔日",
+      "endTimeNextDay": "結束時間為隔日",
+      "leaveHoursWithBreaks": "請假時數(扣除休息時間:12:00-12:30 ,16:30-17:00，上限0.5小時)",
+      "calculating": "計算中...",
+      "hours": "小時",
+      "reasonPlaceholder": "請輸入請假事由（選填）"
+    },
+    "records": {
+      "title": "請假紀錄",
+      "filter": "篩選條件",
+      "startMonth": "起始年月",
+      "endMonth": "結束年月",
+      "approvalStatus": "簽核狀態",
+      "statistics": "統計資料",
+      "totalHours": "總時數",
+      "noRecords": "無符合條件的請假記錄",
+      "usedLeave": "已使用假期",
+      "annualQuotas": "年度假期額度",
+      "annualLeaveQuota": "年度特休(hr)",
+      "sickLeaveQuota": "年度病假(hr)",
+      "menstrualLeaveQuota": "年度生理假(hr)",
+      "availableQuota": "可用額度",
+      "recordsCount": "筆記錄",
+      "applicationTime": "申請時間"
+    },
+    "management": {
+      "title": "請假管理",
+      "allRecords": "所有記錄",
+      "export": "匯出CSV",
+      "approve": "核准",
+      "reject": "退回",
+      "edit": "編輯記錄"
+    },
+    "types": {
+      "事假": "事假",
+      "公假": "公假",
+      "喪假": "喪假",
+      "病假": "病假",
+      "特休": "特休",
+      "生理假": "生理假"
+    },
+    "status": {
+      "簽核中": "簽核中",
+      "已審核": "已審核",
+      "已退回": "已退回"
+    }
+  },
+  "validation": {
+    "required": "此欄位為必填",
+    "invalidFormat": "格式不正確",
+    "invalidDate": "日期格式不正確",
+    "invalidTime": "時間格式不正確",
+    "endDateBeforeStart": "結束日期不能早於開始日期",
+    "invalidEmployeeId": "工號格式不正確",
+    "passwordTooShort": "密碼長度不足"
+  },
+  "errors": {
+    "networkError": "網路連線錯誤",
+    "serverError": "伺服器錯誤",
+    "unauthorized": "未授權存取",
+    "forbidden": "權限不足",
+    "notFound": "找不到資源",
+    "validationError": "資料驗證錯誤",
+    "unknownError": "未知錯誤"
+  },
+  "error": {
+    "boundary": {
+      "title": "系統發生錯誤",
+      "description": "很抱歉，系統遇到了一個意外的錯誤。請嘗試重新載入頁面。",
+      "retry": "重試",
+      "reload": "重新載入"
+    },
+    "retry": "重試"
+  },
+  "userManagement": {
+    "description": "管理系統使用者帳號和權限",
+    "userList": "用戶列表",
+    "addUser": "新增用戶",
+    "editUser": "編輯用戶",
+    "employeeId": "工號",
+    "name": "姓名",
+    "password": "密碼",
+    "permission": "權限",
+    "actions": "操作",
+    "admin": "管理者",
+    "employee": "員工",
+    "confirmDelete": "確定要刪除此用戶嗎？"
+  },
+  "autoLogout": {
+    "timeoutMessage": "你閒置已超出時間，請重新登入",
+    "reloginButton": "重新登入",
+    "autoRedirectMessage": "將在 {seconds} 秒後自動跳轉到登入頁面",
+    "sessionExpired": "會話已過期",
+    "logoutReasons": {
+      "timeout": "因閒置時間過長而登出",
+      "manual": "手動登出",
+      "security": "因安全原因而登出",
+      "error": "因系統錯誤而登出"
+    }
+  }
+}

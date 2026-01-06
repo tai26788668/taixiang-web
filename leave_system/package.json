@@ -1,0 +1,40 @@
+{
+  "name": "employee-leave-client",
+  "version": "2.0.0",
+  "description": "Employee Leave System Frontend",
+  "type": "module",
+  "scripts": {
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest --run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^4.32.6",
+    "@types/node": "^20.5.0",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.3",
+    "autoprefixer": "^10.4.15",
+    "axios": "^1.5.0",
+    "i18next": "^23.4.4",
+    "i18next-browser-languagedetector": "^8.2.0",
+    "postcss": "^8.4.28",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.45.4",
+    "react-i18next": "^13.1.2",
+    "react-router-dom": "^6.15.0",
+    "tailwindcss": "^3.3.3",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.1.2",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
+    "fast-check": "^4.4.0",
+    "jsdom": "^22.1.0",
+    "vitest": "^0.34.3"
+  }
+}

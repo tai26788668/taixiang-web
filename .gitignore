@@ -1,0 +1,76 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Build outputs
+dist/
+*/dist/
+build/
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Logs
+*.log
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Coverage directory used by tools like istanbul
+coverage/
+.nyc_output/
+
+# TypeScript
+*.tsbuildinfo
+
+# Vite cache
+.vite/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Development scripts (local only)
+deploy-*.ps1
+start-*.ps1
+check-*.ps1
+verify-*.ps1
+convert-*.ps1
+simple-*.ps1
+quick-test.ps1
+
+# Temporary text files
+*.txt
+
+# Backup files
+*-original.*
+*-plan-a.*
+*_backup_*.csv
+
+# Large media files (development only)
+*.MOV
+*.prproj
+*.psd
+
+# Version files (keep only in git history)
+VERSION_*.md

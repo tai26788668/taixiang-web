@@ -1,0 +1,158 @@
+{
+  "system": {
+    "title": "Portal Karyawan"
+  },
+  "nav": {
+    "leaveApplication": "Pengajuan Cuti",
+    "leaveRecords": "Catatan Cuti",
+    "leaveManagement": "Manajemen Cuti",
+    "userManagement": "Manajemen Pengguna"
+  },
+  "auth": {
+    "login": "Masuk",
+    "logout": "Keluar",
+    "employeeId": "ID Karyawan",
+    "password": "Kata Sandi",
+    "loginButton": "Masuk",
+    "loginFailed": "Login Gagal",
+    "invalidCredentials": "ID karyawan atau kata sandi salah",
+    "pleaseLogin": "Silakan masukkan ID karyawan dan kata sandi Anda untuk masuk"
+  },
+  "common": {
+    "welcome": "Selamat Datang",
+    "loading": "Memuat...",
+    "submit": "Kirim",
+    "cancel": "Batal",
+    "save": "Simpan",
+    "delete": "Hapus",
+    "edit": "Edit",
+    "search": "Cari",
+    "reset": "Reset",
+    "confirm": "Konfirmasi",
+    "back": "Kembali",
+    "next": "Selanjutnya",
+    "previous": "Sebelumnya",
+    "close": "Tutup",
+    "yes": "Ya",
+    "no": "Tidak",
+    "dismiss": "Tutup",
+    "all": "Semua"
+  },
+  "leave": {
+    "application": {
+      "title": "Pengajuan Cuti",
+      "employeeId": "ID Karyawan",
+      "name": "Nama",
+      "leaveType": "Jenis Cuti",
+      "leaveDate": "Tanggal Cuti",
+      "startDate": "Tanggal Mulai",
+      "startTime": "Waktu Mulai",
+      "endDate": "Tanggal Selesai",
+      "endTime": "Waktu Selesai",
+      "leaveHours": "Jam Cuti",
+      "reason": "Alasan",
+      "submit": "Kirim Pengajuan",
+      "success": "Pengajuan cuti berhasil dikirim",
+      "error": "Gagal mengirim pengajuan cuti",
+      "selectStartTime": "Pilih waktu mulai",
+      "selectEndTime": "Pilih waktu selesai",
+      "selectTime": "Pilih waktu",
+      "initializingTimeSelector": "Menginisialisasi pemilih waktu...",
+      "timeSelectorLoadFailed": "Pemilih waktu gagal dimuat",
+      "typing": "Mengetik",
+      "keyboardInstructions": "Gunakan tombol panah untuk memilih waktu, atau ketik angka untuk mencari dengan cepat. Tekan Escape untuk menghapus input.",
+      "startTimeNextDay": "Waktu mulai adalah hari berikutnya",
+      "endTimeNextDay": "Waktu selesai adalah hari berikutnya",
+      "leaveHoursWithBreaks": "Jam Cuti (tidak termasuk waktu istirahat: 12:00-12:30, 16:30-17:00, maksimal 0,5 jam)",
+      "calculating": "Menghitung...",
+      "hours": "jam",
+      "reasonPlaceholder": "Silakan masukkan alasan cuti (opsional)"
+    },
+    "records": {
+      "title": "Catatan Cuti",
+      "filter": "Filter",
+      "startMonth": "Bulan Mulai",
+      "endMonth": "Bulan Selesai",
+      "approvalStatus": "Status Persetujuan",
+      "statistics": "Statistik",
+      "totalHours": "Total Jam",
+      "noRecords": "Tidak ada catatan cuti yang sesuai",
+      "usedLeave": "Cuti yang Digunakan",
+      "annualQuotas": "Kuota Cuti Tahunan",
+      "annualLeaveQuota": "Cuti Tahunan (jam)",
+      "sickLeaveQuota": "Cuti Sakit (jam)",
+      "menstrualLeaveQuota": "Cuti Menstruasi (jam)",
+      "availableQuota": "Kuota Tersedia",
+      "recordsCount": "catatan",
+      "applicationTime": "Waktu Pengajuan"
+    },
+    "management": {
+      "title": "Manajemen Cuti",
+      "allRecords": "Semua Catatan",
+      "export": "Ekspor CSV",
+      "approve": "Setujui",
+      "reject": "Tolak",
+      "edit": "Edit Catatan"
+    },
+    "types": {
+      "事假": "Cuti Pribadi",
+      "公假": "Cuti Resmi",
+      "喪假": "Cuti Duka",
+      "病假": "Cuti Sakit",
+      "特休": "Cuti Tahunan",
+      "生理假": "Cuti Menstruasi"
+    },
+    "status": {
+      "簽核中": "Menunggu",
+      "已審核": "Disetujui",
+      "已退回": "Ditolak"
+    }
+  },
+  "validation": {
+    "required": "Bidang ini wajib diisi",
+    "invalidFormat": "Format tidak valid",
+    "invalidDate": "Format tanggal tidak valid",
+    "invalidTime": "Format waktu tidak valid",
+    "endDateBeforeStart": "Tanggal selesai tidak boleh sebelum tanggal mulai",
+    "invalidEmployeeId": "Format ID karyawan tidak valid",
+    "passwordTooShort": "Kata sandi terlalu pendek"
+  },
+  "errors": {
+    "networkError": "Kesalahan koneksi jaringan",
+    "serverError": "Kesalahan server",
+    "unauthorized": "Akses tidak diizinkan",
+    "forbidden": "Izin tidak mencukupi",
+    "notFound": "Sumber daya tidak ditemukan",
+    "validationError": "Kesalahan validasi data",
+    "unknownError": "Kesalahan tidak dikenal"
+  },
+  "error": {
+    "boundary": {
+      "title": "Terjadi Kesalahan Sistem",
+      "description": "Maaf, sistem mengalami kesalahan yang tidak terduga. Silakan coba muat ulang halaman.",
+      "retry": "Coba Lagi",
+      "reload": "Muat Ulang"
+    },
+    "retry": "Coba Lagi"
+  },
+  "userManagement": {
+    "description": "Kelola akun pengguna sistem dan izin",
+    "userList": "Daftar Pengguna",
+    "addUser": "Tambah Pengguna",
+    "editUser": "Edit Pengguna",
+    "employeeId": "ID Karyawan",
+    "name": "Nama",
+    "password": "Kata Sandi",
+    "permission": "Izin",
+    "actions": "Tindakan",
+    "admin": "Admin",
+    "employee": "Karyawan",
+    "confirmDelete": "Apakah Anda yakin ingin menghapus pengguna ini?"
+  },
+  "autoLogout": {
+    "timeoutMessage": "Anda telah menganggur terlalu lama, silakan masuk lagi",
+    "reloginButton": "Masuk Lagi",
+    "autoRedirectMessage": "Akan otomatis dialihkan ke halaman login dalam {seconds} detik",
+    "sessionExpired": "Sesi Berakhir"
+  }
+}

@@ -1,0 +1,164 @@
+{
+  "system": {
+    "title": "Employee Portal"
+  },
+  "nav": {
+    "leaveApplication": "Leave Application",
+    "leaveRecords": "Leave Records",
+    "leaveManagement": "Leave Management",
+    "userManagement": "User Management"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "employeeId": "Employee ID",
+    "password": "Password",
+    "loginButton": "Login",
+    "loginFailed": "Login Failed",
+    "invalidCredentials": "Invalid employee ID or password",
+    "pleaseLogin": "Please enter your employee ID and password to login"
+  },
+  "common": {
+    "welcome": "Welcome",
+    "loading": "Loading...",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "reset": "Reset",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No",
+    "dismiss": "Dismiss",
+    "all": "All"
+  },
+  "leave": {
+    "application": {
+      "title": "Leave Application",
+      "employeeId": "Employee ID",
+      "name": "Name",
+      "leaveType": "Leave Type",
+      "leaveDate": "Leave Date",
+      "startDate": "Start Date",
+      "startTime": "Start Time",
+      "endDate": "End Date",
+      "endTime": "End Time",
+      "leaveHours": "Leave Hours",
+      "reason": "Reason",
+      "submit": "Submit Application",
+      "success": "Leave application submitted successfully",
+      "error": "Failed to submit leave application",
+      "selectStartTime": "Select start time",
+      "selectEndTime": "Select end time",
+      "selectTime": "Select time",
+      "initializingTimeSelector": "Initializing time selector...",
+      "timeSelectorLoadFailed": "Time selector failed to load",
+      "typing": "Typing",
+      "keyboardInstructions": "Use arrow keys to select time, or type numbers to quickly locate. Press Escape to clear input.",
+      "startTimeNextDay": "Start time is next day",
+      "endTimeNextDay": "End time is next day",
+      "leaveHoursWithBreaks": "Leave Hours (excluding break times: 12:00-12:30, 16:30-17:00, max 0.5 hours)",
+      "calculating": "Calculating...",
+      "hours": "hours",
+      "reasonPlaceholder": "Please enter leave reason (optional)"
+    },
+    "records": {
+      "title": "Leave Records",
+      "filter": "Filter",
+      "startMonth": "Start Month",
+      "endMonth": "End Month",
+      "approvalStatus": "Approval Status",
+      "statistics": "Statistics",
+      "totalHours": "Total Hours",
+      "noRecords": "No matching leave records found",
+      "usedLeave": "Used Leave",
+      "annualQuotas": "Annual Leave Quotas",
+      "annualLeaveQuota": "Annual Leave (hr)",
+      "sickLeaveQuota": "Sick Leave (hr)",
+      "menstrualLeaveQuota": "Menstrual Leave (hr)",
+      "availableQuota": "Available Quota",
+      "recordsCount": "records",
+      "applicationTime": "Application Time"
+    },
+    "management": {
+      "title": "Leave Management",
+      "allRecords": "All Records",
+      "export": "Export CSV",
+      "approve": "Approve",
+      "reject": "Reject",
+      "edit": "Edit Record"
+    },
+    "types": {
+      "事假": "Personal Leave",
+      "公假": "Official Leave",
+      "喪假": "Bereavement Leave",
+      "病假": "Sick Leave",
+      "特休": "Annual Leave",
+      "生理假": "Menstrual Leave"
+    },
+    "status": {
+      "簽核中": "Pending",
+      "已審核": "Approved",
+      "已退回": "Rejected"
+    }
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalidFormat": "Invalid format",
+    "invalidDate": "Invalid date format",
+    "invalidTime": "Invalid time format",
+    "endDateBeforeStart": "End date cannot be before start date",
+    "invalidEmployeeId": "Invalid employee ID format",
+    "passwordTooShort": "Password is too short"
+  },
+  "errors": {
+    "networkError": "Network connection error",
+    "serverError": "Server error",
+    "unauthorized": "Unauthorized access",
+    "forbidden": "Insufficient permissions",
+    "notFound": "Resource not found",
+    "validationError": "Data validation error",
+    "unknownError": "Unknown error"
+  },
+  "error": {
+    "boundary": {
+      "title": "System Error Occurred",
+      "description": "Sorry, the system encountered an unexpected error. Please try reloading the page.",
+      "retry": "Retry",
+      "reload": "Reload"
+    },
+    "retry": "Retry"
+  },
+  "userManagement": {
+    "description": "Manage system user accounts and permissions",
+    "userList": "User List",
+    "addUser": "Add User",
+    "editUser": "Edit User",
+    "employeeId": "Employee ID",
+    "name": "Name",
+    "password": "Password",
+    "permission": "Permission",
+    "actions": "Actions",
+    "admin": "Admin",
+    "employee": "Employee",
+    "confirmDelete": "Are you sure you want to delete this user?"
+  },
+  "autoLogout": {
+    "timeoutMessage": "You have been idle for too long, please log in again",
+    "reloginButton": "Log In Again",
+    "autoRedirectMessage": "Will automatically redirect to login page in {seconds} seconds",
+    "sessionExpired": "Session Expired",
+    "logoutReasons": {
+      "timeout": "Session expired due to inactivity",
+      "manual": "Logged out manually",
+      "security": "Logged out for security reasons",
+      "error": "Logged out due to system error"
+    }
+  }
+}

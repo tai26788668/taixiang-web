@@ -1,0 +1,24 @@
+{
+  "name": "company-portal",
+  "version": "0.4.0",
+  "description": "Company Portal with Main Website and Employee Leave Management System",
+  "scripts": {
+    "start": "npm run build && npm run server:start",
+    "dev": "npm run server:dev",
+    "build": "npm run leave:build && npm run server:build && npm run website:build",
+    "test": "npm run server:test && npm run leave:test && npm run website:test",
+    "install:all": "npm install && cd server && npm install && cd ../leave_system && npm install && cd ../website && npm install",
+    "server:dev": "cd server && npm run dev",
+    "server:start": "cd server && npm start",
+    "server:build": "cd server && npm run build",
+    "server:test": "cd server && npm test",
+    "leave:build": "cd leave_system && npm run build",
+    "leave:test": "cd leave_system && npm test",
+    "website:build": "cd website && npm run build",
+    "website:test": "cd website && npm test"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3"
+  }
+}
