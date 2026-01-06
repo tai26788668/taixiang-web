@@ -15,27 +15,50 @@ const path = require('path');
 const csvParser = require('csv-parser');
 const { Client } = require('@line/bot-sdk');
 
-// Load environment variables
-require('dotenv').config();
+// Environment variables are loaded by main index.ts
+// require('dotenv').config(); // Removed - handled by main app
 
-// Validate required environment variables
-const requiredEnvVars = ['LINE_CHANNEL_ACCESS_TOKEN', 'LINE_CHANNEL_SECRET'];
-const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+// Validate required environment variables (moved to router initialization)
+function validateEnvironmentVariables() {
+  const requiredEnvVars = ['LINE_CHANNEL_ACCESS_TOKEN', 'LINE_CHANNEL_SECRET'];
+  const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
 
-if (missingVars.length > 0) {
-  console.error(`錯誤: 缺少必要的環境變數: ${missingVars.join(', ')}`);
-  console.error('請在 .env 檔案中設定這些變數');
-  process.exit(1);
+  if (missingVars.length > 0) {
+    console.error(`錯誤: 缺少必要的環境變數: ${missingVars.join(', ')}`);
+    console.error('請在 Render 平台的 Environment 中設定這些變數');
+    throw new Error(`Missing required environment variables: ${missingVars.join(', ')}`);
+  }
 }
 
-// LINE Bot configuration
-const config = {
-  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
-  channelSecret: process.env.LINE_CHANNEL_SECRET
-};
+// LINE Bot configuration - with validation
+function initializeLINEBot() {
+  // Validate environment variables when actually needed
+  validateEnvironmentVariables();
+  
+  return {
+    channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
+    channelSecret: process.env.LINE_CHANNEL_SECRET
+  };
+}
 
-// Initialize LINE client
-const lineClient = new Client(config);
+// Initialize LINE client (lazy initialization)
+let lineClient;
+let config;
+
+function getLineClient() {
+  if (!lineClient) {
+    config = initializeLINEBot();
+    lineClient = new Client(config);
+  }
+  return lineClient;
+}
+
+function getConfig() {
+  if (!config) {
+    config = initializeLINEBot();
+  }
+  return config;
+}
 
 // Create Express router
 const router = express.Router();
@@ -47,6 +70,7 @@ const router = express.Router();
  * @returns {boolean} - True if signature is valid
  */
 function verifySignature(body, signature) {
+  const config = getConfig();
   const hash = crypto
     .createHmac('sha256', config.channelSecret)
     .update(body)
@@ -193,7 +217,8 @@ async function replyToLine(replyToken, message) {
   try {
     console.log(`準備回覆訊息: ${message}`);
     
-    const response = await lineClient.replyMessage(replyToken, {
+    const client = getLineClient();
+    const response = await client.replyMessage(replyToken, {
       type: 'text',
       text: message
     });
@@ -379,12 +404,6 @@ router.get('/health', async (req, res) => {
     version: '1.0.0',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    config: {
-      hasAccessToken: !!config.channelAccessToken,
-      hasChannelSecret: !!config.channelSecret,
-      accessTokenLength: config.channelAccessToken ? config.channelAccessToken.length : 0,
-      environment: process.env.NODE_ENV || 'development'
-    },
     system: {
       nodeVersion: process.version,
       platform: process.platform,
@@ -440,6 +459,16 @@ router.get('/health', async (req, res) => {
   
   // Test LINE API connectivity (optional check)
   try {
+    // Check if environment variables are available
+    const config = getConfig();
+    
+    healthCheck.config = {
+      hasAccessToken: !!config.channelAccessToken,
+      hasChannelSecret: !!config.channelSecret,
+      accessTokenLength: config.channelAccessToken ? config.channelAccessToken.length : 0,
+      environment: process.env.NODE_ENV || 'development'
+    };
+    
     // We don't actually call the API to avoid unnecessary requests
     // Just verify that we have the required configuration
     if (!config.channelAccessToken || !config.channelSecret) {
@@ -455,6 +484,13 @@ router.get('/health', async (req, res) => {
       };
     }
   } catch (error) {
+    healthCheck.config = {
+      hasAccessToken: false,
+      hasChannelSecret: false,
+      accessTokenLength: 0,
+      environment: process.env.NODE_ENV || 'development',
+      error: error.message
+    };
     healthCheck.lineApi = {
       configured: false,
       error: error.message
