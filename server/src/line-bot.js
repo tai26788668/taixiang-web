@@ -137,11 +137,11 @@ function filterRecordsByDate(records, filterType, targetDate) {
       case 'future':
         return recordDate >= targetDate;
       case 'future-approved':
-        return recordDate >= targetDate && record.status === '已簽核';
+        return recordDate >= targetDate && record.status === '已審核';
       case 'today':
         return recordDate === targetDate;
       case 'today-approved':
-        return recordDate === targetDate && record.status === '已簽核';
+        return recordDate === targetDate && record.status === '已審核';
       default:
         return false;
     }
