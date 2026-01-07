@@ -162,6 +162,15 @@ export const websiteConfig: WebsiteConfig = {
     items: [
       // 麻粩類別的口味
       {
+        id: 'flavor-1-4',
+        title: '椰子麻粩',
+        description: '濃郁椰香一打開就聞到，酥酥脆脆的口感超涮嘴，每一口都是滿滿椰子味，甜度適中越嚼越香，停不下來一個接一個，這就是會讓人回購的好滋味。',
+        icon: '/images/flavors/category1_yets.jpg',
+        category: '麻粩',
+        color: '#8B4513',
+        package: '5斤袋裝'
+      },
+      {
         id: 'flavor-1-1',
         title: '芝麻麻粩',
         description: '選用優質黑芝麻，經過傳統手工炒製工藝，散發濃郁芝麻香氣。外層酥脆內層軟糯，每一口都能品嚐到芝麻的天然甘甜。富含維生素E和不飽和脂肪酸，是健康美味的傳統點心。',
