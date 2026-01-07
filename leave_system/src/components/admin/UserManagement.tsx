@@ -195,20 +195,20 @@ export const UserManagement: React.FC = () => {
       )}
 
       {/* 操作按鈕 */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-3 sm:space-y-0">
         <h2 className="text-lg font-medium text-gray-900">
           {t('userManagement.userList', '用戶列表')}
         </h2>
-        <div className="flex space-x-3">
+        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
           <button
             onClick={handleExportCSV}
-            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
           >
             匯出CSV
           </button>
           <button
             onClick={handleAddUser}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
           >
             {t('userManagement.addUser', '新增用戶')}
           </button>
@@ -217,89 +217,151 @@ export const UserManagement: React.FC = () => {
 
       {/* 用戶列表 */}
       <div className="bg-white shadow rounded-lg overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t('userManagement.employeeId', '工號')}
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t('userManagement.name', '姓名')}
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t('userManagement.password', '密碼')}
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t('userManagement.permission', '權限')}
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t('leave.records.annualLeaveQuota', '年度特休')}
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t('leave.records.sickLeaveQuota', '年度病假')}
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t('leave.records.menstrualLeaveQuota', '年度生理假')}
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                年度事假(HR)
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t('userManagement.actions', '操作')}
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {users.map((user) => (
-              <tr key={user.employeeId}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  {user.employeeId}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {user.name}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-mono">
-                  {user.password}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  <span className={`px-2 py-1 text-xs rounded-full ${
-                    user.permission === 'admin' 
-                      ? 'bg-red-100 text-red-800' 
-                      : 'bg-green-100 text-green-800'
-                  }`}>
-                    {user.permission === 'admin' ? t('userManagement.admin', '管理者') : t('userManagement.employee', '員工')}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {user.annualLeave}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {user.sickLeave}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {user.menstrualLeave}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {user.personalLeave || 0}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                  <button
-                    onClick={() => handleEditUser(user)}
-                    className="text-blue-600 hover:text-blue-900"
-                  >
-                    {t('common.edit')}
-                  </button>
-                  <button
-                    onClick={() => handleDeleteUser(user.employeeId)}
-                    className="text-red-600 hover:text-red-900"
-                  >
-                    {t('common.delete')}
-                  </button>
-                </td>
+        {/* 桌面版表格 */}
+        <div className="hidden md:block">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {t('userManagement.employeeId', '工號')}
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {t('userManagement.name', '姓名')}
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {t('userManagement.password', '密碼')}
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {t('userManagement.permission', '權限')}
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {t('leave.records.annualLeaveQuota', '年度特休')}
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {t('leave.records.sickLeaveQuota', '年度病假')}
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {t('leave.records.menstrualLeaveQuota', '年度生理假')}
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  年度事假(HR)
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {t('userManagement.actions', '操作')}
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {users.map((user) => (
+                <tr key={user.employeeId}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {user.employeeId}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {user.name}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-mono">
+                    {user.password}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <span className={`px-2 py-1 text-xs rounded-full ${
+                      user.permission === 'admin' 
+                        ? 'bg-red-100 text-red-800' 
+                        : 'bg-green-100 text-green-800'
+                    }`}>
+                      {user.permission === 'admin' ? t('userManagement.admin', '管理者') : t('userManagement.employee', '員工')}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {user.annualLeave}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {user.sickLeave}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {user.menstrualLeave}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {user.personalLeave || 0}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                    <button
+                      onClick={() => handleEditUser(user)}
+                      className="text-blue-600 hover:text-blue-900"
+                    >
+                      {t('common.edit')}
+                    </button>
+                    <button
+                      onClick={() => handleDeleteUser(user.employeeId)}
+                      className="text-red-600 hover:text-red-900"
+                    >
+                      {t('common.delete')}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* 手機版卡片列表 */}
+        <div className="md:hidden">
+          {users.map((user) => (
+            <div key={user.employeeId} className="border-b border-gray-200 p-4">
+              <div className="flex justify-between items-start mb-3">
+                <div>
+                  <h3 className="text-lg font-medium text-gray-900">{user.name}</h3>
+                  <p className="text-sm text-gray-500">工號: {user.employeeId}</p>
+                </div>
+                <span className={`px-2 py-1 text-xs rounded-full ${
+                  user.permission === 'admin' 
+                    ? 'bg-red-100 text-red-800' 
+                    : 'bg-green-100 text-green-800'
+                }`}>
+                  {user.permission === 'admin' ? t('userManagement.admin', '管理者') : t('userManagement.employee', '員工')}
+                </span>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-2 text-sm mb-3">
+                <div>
+                  <span className="text-gray-500">密碼:</span>
+                  <span className="ml-1 font-mono">{user.password}</span>
+                </div>
+                <div>
+                  <span className="text-gray-500">年度特休:</span>
+                  <span className="ml-1">{user.annualLeave}</span>
+                </div>
+                <div>
+                  <span className="text-gray-500">年度病假:</span>
+                  <span className="ml-1">{user.sickLeave}</span>
+                </div>
+                <div>
+                  <span className="text-gray-500">年度生理假:</span>
+                  <span className="ml-1">{user.menstrualLeave}</span>
+                </div>
+                <div>
+                  <span className="text-gray-500">年度事假:</span>
+                  <span className="ml-1">{user.personalLeave || 0}</span>
+                </div>
+              </div>
+              
+              <div className="flex space-x-3">
+                <button
+                  onClick={() => handleEditUser(user)}
+                  className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                >
+                  {t('common.edit')}
+                </button>
+                <button
+                  onClick={() => handleDeleteUser(user.employeeId)}
+                  className="flex-1 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
+                >
+                  {t('common.delete')}
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* 編輯/新增用戶對話框 */}
