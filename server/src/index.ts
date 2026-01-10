@@ -140,7 +140,8 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/leave', leaveRoutes);
 app.use('/api/admin', adminRoutes);
-app.use('/api/admin/users', usersRoutes);
+app.use('/api/user', usersRoutes);  // 變更密碼等用戶相關功能
+app.use('/api/admin/users', usersRoutes);  // 管理者用戶管理功能
 
 // LINE Bot 路由
 app.use('/line', lineBotRoutes);
