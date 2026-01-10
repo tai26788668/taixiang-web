@@ -6,7 +6,8 @@
     "leaveApplication": "Leave Application",
     "leaveRecords": "Leave Records",
     "leaveManagement": "Leave Management",
-    "userManagement": "User Management"
+    "userManagement": "User Management",
+    "changePassword": "Change Password"
   },
   "auth": {
     "login": "Login",
@@ -148,6 +149,33 @@
     "admin": "Admin",
     "employee": "Employee",
     "confirmDelete": "Are you sure you want to delete this user?"
+  },
+  "changePassword": {
+    "title": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "changeButton": "Change Password",
+    "resetButton": "Reset",
+    "success": "Password changed successfully!",
+    "error": "Failed to change password, please try again later",
+    "currentPasswordPlaceholder": "Please enter current password",
+    "newPasswordPlaceholder": "Please enter new password",
+    "confirmPasswordPlaceholder": "Please enter new password again",
+    "rules": {
+      "title": "Password Rules:",
+      "minLength": "Password must be at least 4 characters long",
+      "notSame": "New password cannot be the same as current password",
+      "security": "Password will be displayed in plain text, please ensure your surroundings are secure"
+    },
+    "validation": {
+      "currentPasswordRequired": "Please enter current password",
+      "newPasswordRequired": "Please enter new password",
+      "newPasswordTooShort": "New password must be at least 4 characters long",
+      "confirmPasswordRequired": "Please confirm new password",
+      "passwordMismatch": "New password and confirmation password do not match",
+      "samePassword": "New password cannot be the same as current password"
+    }
   },
   "autoLogout": {
     "timeoutMessage": "You have been idle for too long, please log in again",

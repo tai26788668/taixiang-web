@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
+import { useLanguage } from '../../hooks/useLanguage';
 import { api } from '../../services/api';
 
 interface ChangePasswordFormData {
@@ -16,6 +17,7 @@ interface ChangePasswordFormErrors {
 
 export const ChangePassword: React.FC = () => {
   const { user } = useAuth();
+  const { t } = useLanguage();
   
   const [formData, setFormData] = useState<ChangePasswordFormData>({
     currentPassword: '',
@@ -54,23 +56,23 @@ export const ChangePassword: React.FC = () => {
     const newErrors: ChangePasswordFormErrors = {};
 
     if (!formData.currentPassword.trim()) {
-      newErrors.currentPassword = '請輸入目前密碼';
+      newErrors.currentPassword = t('changePassword.validation.currentPasswordRequired');
     }
 
     if (!formData.newPassword.trim()) {
-      newErrors.newPassword = '請輸入新密碼';
+      newErrors.newPassword = t('changePassword.validation.newPasswordRequired');
     } else if (formData.newPassword.length < 4) {
-      newErrors.newPassword = '新密碼至少需要4個字符';
+      newErrors.newPassword = t('changePassword.validation.newPasswordTooShort');
     }
 
     if (!formData.confirmPassword.trim()) {
-      newErrors.confirmPassword = '請確認新密碼';
+      newErrors.confirmPassword = t('changePassword.validation.confirmPasswordRequired');
     } else if (formData.newPassword !== formData.confirmPassword) {
-      newErrors.confirmPassword = '新密碼與確認密碼不一致';
+      newErrors.confirmPassword = t('changePassword.validation.passwordMismatch');
     }
 
     if (formData.currentPassword === formData.newPassword) {
-      newErrors.newPassword = '新密碼不能與目前密碼相同';
+      newErrors.newPassword = t('changePassword.validation.samePassword');
     }
 
     setErrors(newErrors);
@@ -96,7 +98,7 @@ export const ChangePassword: React.FC = () => {
       });
 
       if (response.data.success) {
-        setSuccess('密碼變更成功！');
+        setSuccess(t('changePassword.success'));
         // 清空表單
         setFormData({
           currentPassword: '',
@@ -104,7 +106,7 @@ export const ChangePassword: React.FC = () => {
           confirmPassword: '',
         });
       } else {
-        setError(response.data.message || '密碼變更失敗');
+        setError(response.data.message || t('changePassword.error'));
       }
     } catch (error: any) {
       console.error('Change password error:', error);
@@ -114,7 +116,7 @@ export const ChangePassword: React.FC = () => {
       } else if (error.message) {
         setError(error.message);
       } else {
-        setError('密碼變更失敗，請稍後再試');
+        setError(t('changePassword.error'));
       }
     } finally {
       setIsLoading(false);
@@ -151,13 +153,13 @@ export const ChangePassword: React.FC = () => {
 
       {/* 變更密碼表單 */}
       <div className="bg-white p-6 rounded-lg shadow-md">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">變更密碼</h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-4">{t('changePassword.title')}</h3>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* 目前密碼 */}
           <div>
             <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700 mb-1">
-              目前密碼 *
+              {t('changePassword.currentPassword')} *
             </label>
             <input
               type="text"
@@ -168,7 +170,7 @@ export const ChangePassword: React.FC = () => {
               className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 errors.currentPassword ? 'border-red-300' : 'border-gray-300'
               }`}
-              placeholder="請輸入目前密碼"
+              placeholder={t('changePassword.currentPasswordPlaceholder')}
             />
             {errors.currentPassword && (
               <p className="mt-1 text-sm text-red-600">{errors.currentPassword}</p>
@@ -178,7 +180,7 @@ export const ChangePassword: React.FC = () => {
           {/* 新密碼 */}
           <div>
             <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 mb-1">
-              新密碼 *
+              {t('changePassword.newPassword')} *
             </label>
             <input
               type="text"
@@ -189,7 +191,7 @@ export const ChangePassword: React.FC = () => {
               className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 errors.newPassword ? 'border-red-300' : 'border-gray-300'
               }`}
-              placeholder="請輸入新密碼"
+              placeholder={t('changePassword.newPasswordPlaceholder')}
             />
             {errors.newPassword && (
               <p className="mt-1 text-sm text-red-600">{errors.newPassword}</p>
@@ -199,7 +201,7 @@ export const ChangePassword: React.FC = () => {
           {/* 確認新密碼 */}
           <div>
             <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
-              確認新密碼 *
+              {t('changePassword.confirmPassword')} *
             </label>
             <input
               type="text"
@@ -210,7 +212,7 @@ export const ChangePassword: React.FC = () => {
               className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 errors.confirmPassword ? 'border-red-300' : 'border-gray-300'
               }`}
-              placeholder="請再次輸入新密碼"
+              placeholder={t('changePassword.confirmPasswordPlaceholder')}
             />
             {errors.confirmPassword && (
               <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
@@ -238,7 +240,7 @@ export const ChangePassword: React.FC = () => {
               disabled={isLoading}
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-400"
             >
-              {isLoading ? '變更中...' : '變更密碼'}
+              {isLoading ? `${t('changePassword.changeButton')}中...` : t('changePassword.changeButton')}
             </button>
             <button
               type="button"
@@ -246,18 +248,18 @@ export const ChangePassword: React.FC = () => {
               disabled={isLoading}
               className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 disabled:bg-gray-400"
             >
-              重設
+              {t('changePassword.resetButton')}
             </button>
           </div>
         </form>
 
         {/* 密碼規則說明 */}
         <div className="mt-6 p-4 bg-gray-50 rounded-md">
-          <h4 className="text-sm font-medium text-gray-700 mb-2">密碼規則：</h4>
+          <h4 className="text-sm font-medium text-gray-700 mb-2">{t('changePassword.rules.title')}</h4>
           <ul className="text-sm text-gray-600 space-y-1">
-            <li>• 密碼長度至少4個字符</li>
-            <li>• 新密碼不能與目前密碼相同</li>
-            <li>• 密碼將以明文顯示，請確保周圍環境安全</li>
+            <li>• {t('changePassword.rules.minLength')}</li>
+            <li>• {t('changePassword.rules.notSame')}</li>
+            <li>• {t('changePassword.rules.security')}</li>
           </ul>
         </div>
       </div>

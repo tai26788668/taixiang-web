@@ -6,7 +6,8 @@
     "leaveApplication": "請假申請",
     "leaveRecords": "請假紀錄",
     "leaveManagement": "請假管理",
-    "userManagement": "權限資料"
+    "userManagement": "權限資料",
+    "changePassword": "變更密碼"
   },
   "auth": {
     "login": "登入",
@@ -148,6 +149,33 @@
     "admin": "管理者",
     "employee": "員工",
     "confirmDelete": "確定要刪除此用戶嗎？"
+  },
+  "changePassword": {
+    "title": "變更密碼",
+    "currentPassword": "目前密碼",
+    "newPassword": "新密碼",
+    "confirmPassword": "確認新密碼",
+    "changeButton": "變更密碼",
+    "resetButton": "重設",
+    "success": "密碼變更成功！",
+    "error": "密碼變更失敗，請稍後再試",
+    "currentPasswordPlaceholder": "請輸入目前密碼",
+    "newPasswordPlaceholder": "請輸入新密碼",
+    "confirmPasswordPlaceholder": "請再次輸入新密碼",
+    "rules": {
+      "title": "密碼規則：",
+      "minLength": "密碼長度至少4個字符",
+      "notSame": "新密碼不能與目前密碼相同",
+      "security": "密碼將以明文顯示，請確保周圍環境安全"
+    },
+    "validation": {
+      "currentPasswordRequired": "請輸入目前密碼",
+      "newPasswordRequired": "請輸入新密碼",
+      "newPasswordTooShort": "新密碼至少需要4個字符",
+      "confirmPasswordRequired": "請確認新密碼",
+      "passwordMismatch": "新密碼與確認密碼不一致",
+      "samePassword": "新密碼不能與目前密碼相同"
+    }
   },
   "autoLogout": {
     "timeoutMessage": "你閒置已超出時間，請重新登入",

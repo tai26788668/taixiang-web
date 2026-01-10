@@ -59,7 +59,7 @@ export const Header: React.FC = () => {
                     to="/user/change-password" 
                     className="text-gray-600 hover:text-gray-800 transition-colors"
                   >
-                    變更密碼
+                    {t('nav.changePassword')}
                   </Link>
                   <Link 
                     to="/leave/application" 
@@ -189,7 +189,7 @@ export const Header: React.FC = () => {
                     className="block py-2 text-gray-600 hover:text-gray-800 transition-colors"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    變更密碼
+                    {t('nav.changePassword')}
                   </Link>
                   <Link 
                     to="/leave/application" 

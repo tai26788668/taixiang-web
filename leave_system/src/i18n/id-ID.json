@@ -6,7 +6,8 @@
     "leaveApplication": "Pengajuan Cuti",
     "leaveRecords": "Catatan Cuti",
     "leaveManagement": "Manajemen Cuti",
-    "userManagement": "Manajemen Pengguna"
+    "userManagement": "Manajemen Pengguna",
+    "changePassword": "Ubah Kata Sandi"
   },
   "auth": {
     "login": "Masuk",
@@ -148,6 +149,33 @@
     "admin": "Admin",
     "employee": "Karyawan",
     "confirmDelete": "Apakah Anda yakin ingin menghapus pengguna ini?"
+  },
+  "changePassword": {
+    "title": "Ubah Kata Sandi",
+    "currentPassword": "Kata Sandi Saat Ini",
+    "newPassword": "Kata Sandi Baru",
+    "confirmPassword": "Konfirmasi Kata Sandi Baru",
+    "changeButton": "Ubah Kata Sandi",
+    "resetButton": "Reset",
+    "success": "Kata sandi berhasil diubah!",
+    "error": "Gagal mengubah kata sandi, silakan coba lagi nanti",
+    "currentPasswordPlaceholder": "Silakan masukkan kata sandi saat ini",
+    "newPasswordPlaceholder": "Silakan masukkan kata sandi baru",
+    "confirmPasswordPlaceholder": "Silakan masukkan kata sandi baru lagi",
+    "rules": {
+      "title": "Aturan Kata Sandi:",
+      "minLength": "Kata sandi harus minimal 4 karakter",
+      "notSame": "Kata sandi baru tidak boleh sama dengan kata sandi saat ini",
+      "security": "Kata sandi akan ditampilkan dalam teks biasa, pastikan lingkungan sekitar aman"
+    },
+    "validation": {
+      "currentPasswordRequired": "Silakan masukkan kata sandi saat ini",
+      "newPasswordRequired": "Silakan masukkan kata sandi baru",
+      "newPasswordTooShort": "Kata sandi baru harus minimal 4 karakter",
+      "confirmPasswordRequired": "Silakan konfirmasi kata sandi baru",
+      "passwordMismatch": "Kata sandi baru dan konfirmasi kata sandi tidak cocok",
+      "samePassword": "Kata sandi baru tidak boleh sama dengan kata sandi saat ini"
+    }
   },
   "autoLogout": {
     "timeoutMessage": "Anda telah menganggur terlalu lama, silakan masuk lagi",
