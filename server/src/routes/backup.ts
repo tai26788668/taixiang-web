@@ -34,10 +34,15 @@ router.get('/emergency-download', async (req: Request, res: Response) => {
     const timestamp = new Date().toISOString();
     console.log(`[BACKUP] 緊急下載請求 - 時間: ${timestamp}, IP: ${req.ip}`);
 
-    // 定義要下載的文件
+    // 定義要下載的文件 - 根據運行環境確定路徑
+    // __dirname 在編譯後是 server/dist/routes
+    // 所以 ../../data 指向 server/data
     const dataDir = path.join(__dirname, '../../data');
+    console.log(`[BACKUP] __dirname: ${__dirname}`);
+    console.log(`[BACKUP] 數據目錄路徑: ${dataDir}`);
+    
     const filesToDownload = [
-      '請假紀錄.csv',
+      '請假記錄.csv',  // 修正：記錄 不是 紀錄
       '請假系統個人資料.csv'
     ];
 
@@ -78,7 +83,7 @@ router.get('/emergency-download', async (req: Request, res: Response) => {
 
     switch (fileType) {
       case 'leave-records':
-        targetFile = '請假紀錄.csv';
+        targetFile = '請假記錄.csv';  // 修正：記錄 不是 紀錄
         downloadName = `leave-records-backup-${new Date().toISOString().split('T')[0]}.csv`;
         break;
       case 'personal-data':
@@ -165,20 +170,28 @@ router.get('/status', async (req: Request, res: Response) => {
     }
 
     const dataDir = path.join(__dirname, '../../data');
+    console.log(`[BACKUP] __dirname: ${__dirname}`);
+    console.log(`[BACKUP] 數據目錄路徑: ${dataDir}`);
+    
     const filesToCheck = [
-      '請假紀錄.csv',
+      '請假記錄.csv',  // 修正：記錄 不是 紀錄
       '請假系統個人資料.csv'
     ];
 
     const fileStatus = filesToCheck.map(fileName => {
       const filePath = path.join(dataDir, fileName);
+      console.log(`[BACKUP] 檢查文件: ${fileName}`);
+      console.log(`[BACKUP] 完整路徑: ${filePath}`);
       const exists = fs.existsSync(filePath);
+      console.log(`[BACKUP] 文件存在: ${exists}`);
       
       let stats = null;
       if (exists) {
         try {
           stats = fs.statSync(filePath);
+          console.log(`[BACKUP] 文件大小: ${stats.size}`);
         } catch (error) {
+          console.log(`[BACKUP] 讀取文件統計失敗: ${error}`);
           // 文件存在但無法讀取統計信息
         }
       }

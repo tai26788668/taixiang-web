@@ -28,7 +28,7 @@ User-Agent: TaiXiang-Emergency-Backup-Tool
   "data": {
     "files": [
       {
-        "fileName": "請假紀錄.csv",
+        "fileName": "請假記錄.csv",
         "exists": true,
         "size": 1024,
         "lastModified": "2026-01-11T10:30:00.000Z"
@@ -75,9 +75,9 @@ GET /api/backup/emergency-download
 curl -H "User-Agent: TaiXiang-Emergency-Backup-Tool" \
      "http://localhost:10000/api/backup/status"
 
-# Render 部署 (請替換為實際 URL)
+# Render 部署 (後端服務)
 curl -H "User-Agent: TaiXiang-Emergency-Backup-Tool" \
-     "https://your-render-app.onrender.com/api/backup/status"
+     "https://tai-xiang-backend.onrender.com/api/backup/status"
 ```
 
 2. **下載請假紀錄：**
@@ -87,10 +87,10 @@ curl -H "User-Agent: TaiXiang-Emergency-Backup-Tool" \
      -o "leave-records-backup.csv" \
      "http://localhost:10000/api/backup/emergency-download?file=leave-records"
 
-# Render 部署 (請替換為實際 URL)
+# Render 部署 (後端服務)
 curl -H "User-Agent: TaiXiang-Emergency-Backup-Tool" \
      -o "leave-records-backup.csv" \
-     "https://your-render-app.onrender.com/api/backup/emergency-download?file=leave-records"
+     "https://tai-xiang-backend.onrender.com/api/backup/emergency-download?file=leave-records"
 ```
 
 3. **下載個人資料：**
@@ -100,10 +100,10 @@ curl -H "User-Agent: TaiXiang-Emergency-Backup-Tool" \
      -o "personal-data-backup.csv" \
      "http://localhost:10000/api/backup/emergency-download?file=personal-data"
 
-# Render 部署 (請替換為實際 URL)
+# Render 部署 (後端服務)
 curl -H "User-Agent: TaiXiang-Emergency-Backup-Tool" \
      -o "personal-data-backup.csv" \
-     "https://your-render-app.onrender.com/api/backup/emergency-download?file=personal-data"
+     "https://tai-xiang-backend.onrender.com/api/backup/emergency-download?file=personal-data"
 ```
 
 ### 使用 PowerShell (Windows)
@@ -114,9 +114,9 @@ curl -H "User-Agent: TaiXiang-Emergency-Backup-Tool" \
 $headers = @{ "User-Agent" = "TaiXiang-Emergency-Backup-Tool" }
 Invoke-RestMethod -Uri "http://localhost:10000/api/backup/status" -Headers $headers
 
-# Render 部署 (請替換為實際 URL)
+# Render 部署 (後端服務)
 $headers = @{ "User-Agent" = "TaiXiang-Emergency-Backup-Tool" }
-Invoke-RestMethod -Uri "https://your-render-app.onrender.com/api/backup/status" -Headers $headers
+Invoke-RestMethod -Uri "https://tai-xiang-backend.onrender.com/api/backup/status" -Headers $headers
 ```
 
 2. **下載請假紀錄：**
@@ -125,9 +125,9 @@ Invoke-RestMethod -Uri "https://your-render-app.onrender.com/api/backup/status" 
 $headers = @{ "User-Agent" = "TaiXiang-Emergency-Backup-Tool" }
 Invoke-WebRequest -Uri "http://localhost:10000/api/backup/emergency-download?file=leave-records" -Headers $headers -OutFile "leave-records-backup.csv"
 
-# Render 部署 (請替換為實際 URL)
+# Render 部署 (後端服務)
 $headers = @{ "User-Agent" = "TaiXiang-Emergency-Backup-Tool" }
-Invoke-WebRequest -Uri "https://your-render-app.onrender.com/api/backup/emergency-download?file=leave-records" -Headers $headers -OutFile "leave-records-backup.csv"
+Invoke-WebRequest -Uri "https://tai-xiang-backend.onrender.com/api/backup/emergency-download?file=leave-records" -Headers $headers -OutFile "leave-records-backup.csv"
 ```
 
 3. **下載個人資料：**
@@ -136,9 +136,9 @@ Invoke-WebRequest -Uri "https://your-render-app.onrender.com/api/backup/emergenc
 $headers = @{ "User-Agent" = "TaiXiang-Emergency-Backup-Tool" }
 Invoke-WebRequest -Uri "http://localhost:10000/api/backup/emergency-download?file=personal-data" -Headers $headers -OutFile "personal-data-backup.csv"
 
-# Render 部署 (請替換為實際 URL)
+# Render 部署 (後端服務)
 $headers = @{ "User-Agent" = "TaiXiang-Emergency-Backup-Tool" }
-Invoke-WebRequest -Uri "https://your-render-app.onrender.com/api/backup/emergency-download?file=personal-data" -Headers $headers -OutFile "personal-data-backup.csv"
+Invoke-WebRequest -Uri "https://tai-xiang-backend.onrender.com/api/backup/emergency-download?file=personal-data" -Headers $headers -OutFile "personal-data-backup.csv"
 ```
 
 ## 部署環境說明
@@ -148,12 +148,14 @@ Invoke-WebRequest -Uri "https://your-render-app.onrender.com/api/backup/emergenc
 - **用途**: 開發和測試
 
 ### Render 雲端部署
-- **URL**: `https://your-render-app.onrender.com` (請替換為實際的 Render 應用 URL)
+- **前端 URL**: `https://tai-xiang-website.onrender.com` (靜態網站)
+- **後端 URL**: `https://tai-xiang-backend.onrender.com` (API 服務)
+- **備份 API**: 使用後端 URL
 - **用途**: 生產環境
 - **注意**: 
   - 確保 Render 應用已正確部署並運行
   - 使用 HTTPS 協議
-  - 替換 URL 中的 `your-render-app` 為實際的應用名稱
+  - 備份 API 在後端服務上，不是前端網站
 
 ### 跨平台兼容性
 - ✅ **Windows PowerShell**: 完全支援，無論本地或雲端部署
