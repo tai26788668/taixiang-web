@@ -104,6 +104,7 @@ import authRoutes from './routes/auth';
 import leaveRoutes from './routes/leave';
 import adminRoutes from './routes/admin';
 import usersRoutes from './routes/users';
+import backupRoutes from './routes/backup';
 
 // LINE Bot 路由導入
 const lineBotRoutes = require('./line-bot.js');
@@ -142,6 +143,7 @@ app.use('/api/leave', leaveRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/user', usersRoutes);  // 變更密碼等用戶相關功能
 app.use('/api/admin/users', usersRoutes);  // 管理者用戶管理功能
+app.use('/api/backup', backupRoutes);  // 緊急備份路由 - 無需認證
 
 // LINE Bot 路由
 app.use('/line', lineBotRoutes);
