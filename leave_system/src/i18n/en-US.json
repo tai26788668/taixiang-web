@@ -67,7 +67,13 @@
       "leaveHoursWithBreaks": "Leave Hours (excluding break times: 12:00-12:30, 16:30-17:00, max 0.5 hours)",
       "calculating": "Calculating...",
       "hours": "hours",
-      "reasonPlaceholder": "Please enter leave reason (optional)"
+      "reasonPlaceholder": "Please enter leave reason (optional)",
+      "quickOption": "Quick Option",
+      "quickOptions": {
+        "custom": "Custom",
+        "dayShift": "Full Day - Day Shift",
+        "nightShift": "Full Day - Night Shift"
+      }
     },
     "records": {
       "title": "Leave Records",

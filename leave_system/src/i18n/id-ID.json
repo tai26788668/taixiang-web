@@ -67,7 +67,13 @@
       "leaveHoursWithBreaks": "Jam Cuti (tidak termasuk waktu istirahat: 12:00-12:30, 16:30-17:00, maksimal 0,5 jam)",
       "calculating": "Menghitung...",
       "hours": "jam",
-      "reasonPlaceholder": "Silakan masukkan alasan cuti (opsional)"
+      "reasonPlaceholder": "Silakan masukkan alasan cuti (opsional)",
+      "quickOption": "Opsi Cepat",
+      "quickOptions": {
+        "custom": "Kustom",
+        "dayShift": "Seharian - Shift Siang",
+        "nightShift": "Seharian - Shift Malam"
+      }
     },
     "records": {
       "title": "Catatan Cuti",

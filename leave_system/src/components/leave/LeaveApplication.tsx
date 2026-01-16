@@ -16,11 +16,12 @@ export const LeaveApplication: React.FC = () => {
   const [formData, setFormData] = useState<LeaveApplicationFormData>({
     leaveType: '事假',
     leaveDate: '',
-    startTime: '',
-    endTime: '',
+    startTime: '08:00',  // 預設日班開始時間
+    endTime: '16:30',    // 預設日班結束時間
     reason: '',
   });
   
+  const [quickOption, setQuickOption] = useState<'custom' | 'day-shift' | 'night-shift'>('day-shift');  // 預設為日班
   const [errors, setErrors] = useState<LeaveApplicationFormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string>('');
@@ -40,6 +41,35 @@ export const LeaveApplication: React.FC = () => {
     { value: '特休', label: t('leave.types.特休') },
     { value: '生理假', label: t('leave.types.生理假') },
   ];
+
+  // 快速選項
+  const quickOptions = [
+    { value: 'custom', label: t('leave.application.quickOptions.custom') },
+    { value: 'day-shift', label: t('leave.application.quickOptions.dayShift') },
+    { value: 'night-shift', label: t('leave.application.quickOptions.nightShift') },
+  ];
+
+  // 處理快速選項變更
+  const handleQuickOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const option = e.target.value as 'custom' | 'day-shift' | 'night-shift';
+    setQuickOption(option);
+    
+    // 根據選項設定時間
+    if (option === 'day-shift') {
+      setFormData(prev => ({
+        ...prev,
+        startTime: '08:00',
+        endTime: '16:30',
+      }));
+    } else if (option === 'night-shift') {
+      setFormData(prev => ({
+        ...prev,
+        startTime: '14:00',
+        endTime: '22:30',
+      }));
+    }
+    // custom 選項不自動設定時間，讓用戶自行輸入
+  };
 
 
 
@@ -76,11 +106,11 @@ export const LeaveApplication: React.FC = () => {
 
   // 計算請假時數
   const calculateHours = async () => {
-    if (formData.leaveDate && formData.startTime && formData.endTime) {
+    // 只要有開始和結束時間就可以計算（不需要日期）
+    if (formData.startTime && formData.endTime) {
       setIsCalculating(true);
       try {
         console.log('Calculating hours for:', {
-          leaveDate: formData.leaveDate,
           startTime: formData.startTime,
           endTime: formData.endTime
         });
@@ -107,14 +137,14 @@ export const LeaveApplication: React.FC = () => {
         setIsCalculating(false);
       }
     } else {
-      console.log('Missing date/time fields, resetting hours to 0');
+      console.log('Missing time fields, resetting hours to 0');
       setCalculatedHours(0);
       setCalculationError('');
       setIsCalculating(false);
     }
   };
 
-  // 當日期時間變更時重新計算時數
+  // 當時間變更時重新計算時數（不需要等待日期）
   useEffect(() => {
     // 清除之前的計時器
     if (calculationTimeoutRef.current) {
@@ -132,7 +162,7 @@ export const LeaveApplication: React.FC = () => {
         clearTimeout(calculationTimeoutRef.current);
       }
     };
-  }, [formData.leaveDate, formData.startTime, formData.endTime]);
+  }, [formData.startTime, formData.endTime]);  // 移除 leaveDate 依賴
 
 
 
@@ -186,12 +216,13 @@ export const LeaveApplication: React.FC = () => {
       
       if (response.data.success) {
         setSubmitSuccess(t('leave.application.success'));
-        // 重置表單
+        // 重置表單，包括快速選項
+        setQuickOption('day-shift');  // 重置為日班
         setFormData({
           leaveType: '事假',
           leaveDate: '',
-          startTime: '',
-          endTime: '',
+          startTime: '08:00',  // 重置為日班時間
+          endTime: '16:30',
           reason: '',
         });
         setCalculatedHours(0);
@@ -296,6 +327,26 @@ export const LeaveApplication: React.FC = () => {
           )}
         </div>
 
+        {/* 快速選項 */}
+        <div>
+          <label htmlFor="quickOption" className="block text-sm font-medium text-gray-700 mb-1">
+            {t('leave.application.quickOption')}
+          </label>
+          <select
+            id="quickOption"
+            value={quickOption}
+            onChange={handleQuickOptionChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={isSubmitting}
+          >
+            {quickOptions.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
         {/* 開始時間 - 使用TimeSelector */}
         <div>
           <label htmlFor="startTime" className="block text-sm font-medium text-gray-700 mb-1">
@@ -308,7 +359,7 @@ export const LeaveApplication: React.FC = () => {
             onChange={handleInputChange}
             placeholder={t('leave.application.selectStartTime')}
             className="w-full"
-            disabled={isSubmitting}
+            disabled={isSubmitting || quickOption !== 'custom'}
             loading={isSubmitting}
             error={!!errors.startTime}
             errorMessage={errors.startTime}
@@ -333,7 +384,7 @@ export const LeaveApplication: React.FC = () => {
             onChange={handleInputChange}
             placeholder={t('leave.application.selectEndTime')}
             className="w-full"
-            disabled={isSubmitting}
+            disabled={isSubmitting || quickOption !== 'custom'}
             loading={isSubmitting}
             error={!!errors.endTime}
             errorMessage={errors.endTime}
