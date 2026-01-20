@@ -454,6 +454,112 @@ router.post('/webhook', async (req, res) => {
 });
 
 /**
+ * Send today's leave notifications to LINE group
+ * Endpoint: GET/POST /send_leave_today
+ * Triggered by external HTTP/HTTPS request
+ * 
+ * Functionality:
+ * 1. Read server/data/請假記錄.csv
+ * 2. Query records where leave date equals today
+ * 3. Format records as string: "(今日請假)姓名:xxx 開始時間:xxx 結束時間:xxx;..."
+ * 4. Send text message to LINE group using Push Message API
+ */
+router.all('/send_leave_today', async (req, res) => {
+  const startTime = Date.now();
+  console.log(`[${new Date().toISOString()}] 收到今日請假通知請求`);
+  
+  try {
+    // Validate LINE_GROUP_ID environment variable
+    if (!process.env.LINE_GROUP_ID) {
+      console.error('錯誤: 缺少 LINE_GROUP_ID 環境變數');
+      return res.status(500).json({
+        success: false,
+        error: 'LINE_GROUP_ID not configured'
+      });
+    }
+    
+    // Get today's date in YYYY-MM-DD format
+    const today = new Date().toISOString().split('T')[0];
+    console.log(`查詢日期: ${today}`);
+    
+    // Read leave records from CSV
+    console.log('開始讀取請假記錄...');
+    const records = await readLeaveRecords();
+    
+    // Filter records for today
+    const todayRecords = filterRecordsByDate(records, 'today', today);
+    console.log(`找到 ${todayRecords.length} 筆今日請假記錄`);
+    
+    // Format message
+    let message;
+    if (todayRecords.length === 0) {
+      message = '(今日請假)無';
+      console.log('今日無請假記錄');
+    } else {
+      // Format each record: "姓名:xxx 開始時間:xxx 結束時間:xxx;"
+      const recordStrings = todayRecords.map(record => {
+        return `姓名:${record.name} 開始時間:${record.startTime} 結束時間:${record.endTime}`;
+      });
+      
+      // Combine all records with semicolon separator and add prefix
+      message = '(今日請假)' + recordStrings.join(';');
+      console.log(`格式化訊息 (長度: ${message.length} 字元): ${message}`);
+    }
+    
+    // Send message to LINE group using Push Message API
+    try {
+      const client = getLineClient();
+      await client.pushMessage(process.env.LINE_GROUP_ID, {
+        type: 'text',
+        text: message
+      });
+      
+      const processingTime = Date.now() - startTime;
+      console.log(`成功發送今日請假通知到群組，耗時: ${processingTime}ms`);
+      
+      res.status(200).json({
+        success: true,
+        message: 'Leave notification sent successfully',
+        recordCount: todayRecords.length,
+        date: today,
+        processingTime: `${processingTime}ms`
+      });
+      
+    } catch (lineError) {
+      console.error('LINE API 呼叫失敗:', lineError.message);
+      
+      // Handle specific LINE API errors
+      if (lineError.statusCode === 400) {
+        console.error('錯誤: 請求格式錯誤或 Group ID 無效');
+      } else if (lineError.statusCode === 401) {
+        console.error('錯誤: Channel Access Token 無效');
+      } else if (lineError.statusCode === 403) {
+        console.error('錯誤: Bot 未加入該群組或權限不足');
+      } else {
+        console.error('錯誤詳情:', lineError);
+      }
+      
+      res.status(500).json({
+        success: false,
+        error: 'Failed to send LINE message',
+        details: lineError.message
+      });
+    }
+    
+  } catch (error) {
+    const processingTime = Date.now() - startTime;
+    console.error(`今日請假通知處理錯誤 (耗時: ${processingTime}ms):`, error.message);
+    console.error('錯誤堆疊:', error.stack);
+    
+    res.status(500).json({
+      success: false,
+      error: 'Internal server error',
+      details: error.message
+    });
+  }
+});
+
+/**
  * Health check endpoint
  * Returns system status and configuration information
  * Requirements: 需求 2
