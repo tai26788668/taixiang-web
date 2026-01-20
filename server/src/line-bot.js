@@ -560,21 +560,28 @@ router.all('/send_leave_today', async (req, res) => {
     const todayRecords = filterRecordsByDate(records, 'today', today);
     console.log(`找到 ${todayRecords.length} 筆今日請假記錄`);
     
-    // Format message
-    let message;
+    // If no records, return success without sending message
     if (todayRecords.length === 0) {
-      message = '(今日請假)無';
-      console.log('今日無請假記錄');
-    } else {
-      // Format each record: "姓名:xxx 開始時間:xxx 結束時間:xxx;"
-      const recordStrings = todayRecords.map(record => {
-        return `姓名:${record.name} 開始時間:${record.startTime} 結束時間:${record.endTime}`;
-      });
+      const processingTime = Date.now() - startTime;
+      console.log(`今日無請假記錄，不發送訊息，耗時: ${processingTime}ms`);
       
-      // Combine all records with semicolon separator and add prefix
-      message = '(今日請假)' + recordStrings.join(';');
-      console.log(`格式化訊息 (長度: ${message.length} 字元): ${message}`);
+      return res.status(200).json({
+        success: true,
+        message: 'No leave records today, no notification sent',
+        recordCount: 0,
+        date: today,
+        processingTime: `${processingTime}ms`
+      });
     }
+    
+    // Format message for records
+    const recordStrings = todayRecords.map(record => {
+      return `姓名:${record.name} 開始時間:${record.startTime} 結束時間:${record.endTime}`;
+    });
+    
+    // Combine all records with semicolon separator and add prefix
+    const message = '(今日請假)' + recordStrings.join(';');
+    console.log(`格式化訊息 (長度: ${message.length} 字元): ${message}`);
     
     // Send message to LINE group using Push Message API
     try {

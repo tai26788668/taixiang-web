@@ -10,6 +10,9 @@ import { getPersonalDataByEmployeeId } from '../services/personalDataService';
 import { LeaveRecord, LeaveType, ApprovalStatus } from '../types';
 import { getTaiwanDateTime, calculateLeaveHours } from '../utils/dateUtils';
 
+// LINE Bot notification function (待啟用)
+// const { sendLeaveApplicationNotification } = require('../line-bot.js');
+
 const router = express.Router();
 
 /**
@@ -144,6 +147,30 @@ router.post('/apply', authenticateToken, async (req, res) => {
     };
 
     const recordId = await addLeaveRecord(leaveRecord);
+
+    // ============================================================
+    // LINE 通知功能 (目前已註解，待需求時啟用)
+    // ============================================================
+    // 發送請假申請通知到 LINE 群組
+    // 啟用方式: 取消下方程式碼的註解
+    // 注意: 需確保環境變數 LINE_GROUP_ID 已設定
+    // ============================================================
+    /*
+    try {
+      await sendLeaveApplicationNotification({
+        name: user.name,
+        leaveDate: leaveDate,
+        startTime: startTimeParsed.time,
+        endTime: endTimeParsed.time,
+        leaveType: leaveType
+      });
+      console.log('LINE 通知發送成功');
+    } catch (lineError) {
+      // 通知發送失敗不影響請假申請
+      console.error('LINE 通知發送失敗:', lineError instanceof Error ? lineError.message : lineError);
+    }
+    */
+    // ============================================================
 
     res.json({
       success: true,

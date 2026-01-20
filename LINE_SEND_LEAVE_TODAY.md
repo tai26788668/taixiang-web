@@ -84,6 +84,7 @@ Invoke-RestMethod -Uri "https://tai-xiang-backend.onrender.com/line/send_leave_t
 
 ### 成功回應 (HTTP 200)
 
+有記錄時：
 ```json
 {
   "success": true,
@@ -91,6 +92,17 @@ Invoke-RestMethod -Uri "https://tai-xiang-backend.onrender.com/line/send_leave_t
   "recordCount": 2,
   "date": "2026-01-20",
   "processingTime": "245ms"
+}
+```
+
+無記錄時（不發送訊息）：
+```json
+{
+  "success": true,
+  "message": "No leave records today, no notification sent",
+  "recordCount": 0,
+  "date": "2026-01-20",
+  "processingTime": "120ms"
 }
 ```
 
@@ -114,9 +126,7 @@ Invoke-RestMethod -Uri "https://tai-xiang-backend.onrender.com/line/send_leave_t
 
 ### 無請假記錄
 
-```
-(今日請假)無
-```
+當沒有請假記錄時，不會發送任何訊息到 LINE 群組。API 會回傳成功狀態但不執行發送動作。
 
 ## 自動化排程
 
