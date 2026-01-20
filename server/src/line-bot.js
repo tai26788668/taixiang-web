@@ -275,6 +275,76 @@ async function replyToLine(replyToken, message) {
 }
 
 /**
+ * Send leave application notification to LINE group
+ * 發送請假申請通知到 LINE 群組
+ * 
+ * @param {Object} leaveData - Leave application data
+ * @param {string} leaveData.name - Employee name (姓名)
+ * @param {string} leaveData.leaveDate - Leave date (請假日期) in YYYY-MM-DD format
+ * @param {string} leaveData.startTime - Start time (開始時間) in HH:MM format
+ * @param {string} leaveData.endTime - End time (結束時間) in HH:MM format
+ * @param {string} leaveData.leaveType - Leave type (假別): 事假, 公假, 喪假, 病假, 特休, 生理假
+ * @returns {Promise<Object>} - LINE API response
+ * 
+ * @example
+ * await sendLeaveApplicationNotification({
+ *   name: '張三',
+ *   leaveDate: '2026-01-20',
+ *   startTime: '09:00',
+ *   endTime: '17:00',
+ *   leaveType: '事假'
+ * });
+ * 
+ * Message format: "(請假申請)張三,2026-01-20 09:00-17:00 事假"
+ */
+async function sendLeaveApplicationNotification(leaveData) {
+  try {
+    // Validate required fields
+    if (!leaveData.name || !leaveData.leaveDate || !leaveData.startTime || 
+        !leaveData.endTime || !leaveData.leaveType) {
+      throw new Error('Missing required leave data fields');
+    }
+    
+    // Validate LINE_GROUP_ID environment variable
+    if (!process.env.LINE_GROUP_ID) {
+      throw new Error('LINE_GROUP_ID not configured');
+    }
+    
+    // Format message: "(請假申請)姓名,請假日期 開始時間-結束時間 假別"
+    const message = `(請假申請)${leaveData.name},${leaveData.leaveDate} ${leaveData.startTime}-${leaveData.endTime} ${leaveData.leaveType}`;
+    
+    console.log(`準備發送請假申請通知: ${message}`);
+    
+    // Send message to LINE group using Push Message API
+    const client = getLineClient();
+    const response = await client.pushMessage(process.env.LINE_GROUP_ID, {
+      type: 'text',
+      text: message
+    });
+    
+    console.log('請假申請通知發送成功');
+    return response;
+    
+  } catch (error) {
+    console.error('請假申請通知發送失敗:', error.message);
+    
+    // Handle specific LINE API errors
+    if (error.statusCode === 400) {
+      console.error('錯誤: 請求格式錯誤或 Group ID 無效');
+    } else if (error.statusCode === 401) {
+      console.error('錯誤: Channel Access Token 無效');
+    } else if (error.statusCode === 403) {
+      console.error('錯誤: Bot 未加入該群組或權限不足');
+    } else {
+      console.error('錯誤詳情:', error);
+    }
+    
+    // Re-throw the error so calling code can handle it
+    throw error;
+  }
+}
+
+/**
  * Webhook handler - Complete message processing flow
  * Integrates signature verification, message parsing, data querying, and reply functionality
  * Requirements: 需求 1, 3, 4, 5, 6, 7, 8, 9
@@ -676,4 +746,6 @@ router.get('/health', async (req, res) => {
   res.status(httpStatus).json(healthCheck);
 });
 
+// Export router and utility functions
 module.exports = router;
+module.exports.sendLeaveApplicationNotification = sendLeaveApplicationNotification;
