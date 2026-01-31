@@ -68,7 +68,9 @@ export class PersonalDataService {
 
 const PERSONAL_DATA_FILE = process.env.NODE_ENV === 'test' 
   ? path.join(__dirname, '../../test-data/請假系統個人資料.csv')
-  : path.join(__dirname, '../../data/請假系統個人資料.csv');
+  : process.env.PERSISTENT_DISK_PATH 
+    ? path.join(process.env.PERSISTENT_DISK_PATH, '請假系統個人資料.csv')
+    : path.join(__dirname, '../../data/請假系統個人資料.csv');
 
 const PERSONAL_DATA_HEADERS = [
   { id: 'employeeId', title: '工號' },
