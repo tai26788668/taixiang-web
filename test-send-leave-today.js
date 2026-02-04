@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Test script for /line/send_leave_today endpoint
  * 
  * This script tests the endpoint that sends today's leave notifications
@@ -9,7 +9,7 @@
  * 
  * Examples:
  *   node test-send-leave-today.js http://localhost:10000
- *   node test-send-leave-today.js https://tai-xiang-backend.onrender.com
+ *   node test-send-leave-today.js https://taixiang.onrender.com
  */
 
 const https = require('https');

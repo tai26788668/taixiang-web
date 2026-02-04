@@ -1,4 +1,4 @@
-# 🚀 方案 A: 分離部署 - 完整指南
+﻿# 🚀 方案 A: 分離部署 - 完整指南
 
 ## 📋 部署概述
 
@@ -17,7 +17,7 @@
 │                                                             │
 │  服務 1: 主網站 (Static Site - 免費)                        │
 │  ┌─────────────────────────────────────────────────────┐    │
-│  │  https://tai-xiang-website.onrender.com            │    │
+│  │  https://taixiang-website.onrender.com            │    │
 │  │  ├── / (首頁)                                      │    │
 │  │  ├── /#about (關於我們)                            │    │
 │  │  ├── /#products (產品展示)                         │    │
@@ -26,7 +26,7 @@
 │                                                             │
 │  服務 2: 後端系統 (Web Service - $7/月)                     │
 │  ┌─────────────────────────────────────────────────────┐    │
-│  │  https://tai-xiang-backend.onrender.com            │    │
+│  │  https://taixiang.onrender.com            │    │
 │  │  ├── /leave_system (請假系統前端)                   │    │
 │  │  ├── /api/* (後端 API)                             │    │
 │  │  ├── /line/webhook (LINE Bot - 新增功能)           │    │
@@ -75,7 +75,7 @@ git push -u origin main
 
 #### 2.3 點擊 "Create Static Site"
 - 建置時間約 2-3 分鐘
-- 完成後會獲得 URL: `https://tai-xiang-website.onrender.com`
+- 完成後會獲得 URL: `https://taixiang-website.onrender.com`
 
 ### 步驟 3: 部署後端系統 (Web Service)
 
@@ -117,7 +117,7 @@ git push -u origin main
 
 #### 3.4 點擊 "Create Web Service"
 - 建置時間約 3-5 分鐘
-- 完成後會獲得 URL: `https://tai-xiang-backend.onrender.com`
+- 完成後會獲得 URL: `https://taixiang.onrender.com`
 
 ## 🔧 後端配置優化 (可選)
 
@@ -176,7 +176,7 @@ git push
 在 LINE Developers Console 中：
 1. 進入您的 Messaging API Channel
 2. 在 "Messaging API" 設定中：
-   - **Webhook URL**: `https://tai-xiang-backend.onrender.com/line/webhook`
+   - **Webhook URL**: `https://taixiang.onrender.com/line/webhook`
    - **Use webhook**: 啟用
    - **Verify**: 點擊驗證 (應該顯示成功)
 
@@ -199,7 +199,7 @@ git push
 ## ✅ 部署驗證
 
 ### 主網站驗證
-訪問 `https://tai-xiang-website.onrender.com` 檢查：
+訪問 `https://taixiang-website.onrender.com` 檢查：
 - [ ] 首頁正常載入
 - [ ] 產品類別頁面顯示 4 個產品
 - [ ] 麻粩和寸棗有紅色背景和馬浮水印
@@ -209,7 +209,7 @@ git push
 - [ ] 響應式設計在手機上正常
 
 ### 後端系統驗證
-訪問 `https://tai-xiang-backend.onrender.com` 檢查：
+訪問 `https://taixiang.onrender.com` 檢查：
 - [ ] 自動重定向到 `/leave_system`
 - [ ] 請假系統正常載入
 - [ ] 可以註冊/登入

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * LINE Bot Reply System
  * 
  * This module implements a LINE Messaging API bot that responds to user messages
@@ -205,11 +205,13 @@ function formatResponse(records, responseType) {
   }
   
   if (responseType === 'leave_system') {
-    return 'https://tai-xiang-backend.onrender.com/leave_system/login';
+    const backendUrl = process.env.BACKEND_URL || 'https://tai-xiang-backend.onrender.com';
+    return `${backendUrl}/leave_system/login`;
   }
   
   if (responseType === 'website') {
-    return 'https://tai-xiang-website.onrender.com/';
+    const websiteUrl = process.env.WEBSITE_URL || 'https://tai-xiang-website.onrender.com';
+    return `${websiteUrl}/`;
   }
   
   if (records.length === 0) {
@@ -394,6 +396,24 @@ router.post('/webhook', async (req, res) => {
         const messageText = event.message.text;
         const replyToken = event.replyToken;
         const userId = event.source?.userId || 'unknown';
+        
+        // 記錄 Group ID 和 User ID (用於除錯和設定)
+        if (event.source) {
+          console.log('📍 事件來源資訊:');
+          console.log(`   類型: ${event.source.type}`);
+          console.log(`   用戶 ID: ${userId}`);
+          
+          if (event.source.type === 'group') {
+            const groupId = event.source.groupId;
+            console.log(`🎯 群組 ID: ${groupId}`);
+            console.log(`💡 請將此 Group ID 設定到環境變數 LINE_GROUP_ID: ${groupId}`);
+          } else if (event.source.type === 'room') {
+            const roomId = event.source.roomId;
+            console.log(`🏠 聊天室 ID: ${roomId}`);
+          } else {
+            console.log(`👤 私人訊息來自用戶: ${userId}`);
+          }
+        }
         
         console.log(`用戶 ${userId} 發送訊息: "${messageText}"`);
         
@@ -634,6 +654,31 @@ router.all('/send_leave_today', async (req, res) => {
       details: error.message
     });
   }
+});
+
+/**
+ * Group ID Detection Endpoint
+ * 用於檢測和顯示 LINE 群組 ID
+ */
+router.get('/group-info', async (req, res) => {
+  console.log(`[${new Date().toISOString()}] Group ID 檢測請求`);
+  
+  res.json({
+    success: true,
+    message: 'Group ID Detection Endpoint',
+    instructions: {
+      zh: '請在 LINE 群組中發送任何訊息，然後檢查伺服器日誌以獲取 Group ID',
+      en: 'Send any message in the LINE group, then check server logs for Group ID'
+    },
+    steps: [
+      '1. 確保 LINE Bot 已加入群組',
+      '2. 在群組中發送任何訊息（例如：help?）',
+      '3. 檢查伺服器日誌，尋找 "🎯 群組 ID:" 的輸出',
+      '4. 將該 Group ID 設定到環境變數 LINE_GROUP_ID'
+    ],
+    currentGroupId: process.env.LINE_GROUP_ID || '尚未設定',
+    timestamp: new Date().toISOString()
+  });
 });
 
 /**

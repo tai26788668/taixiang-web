@@ -1,4 +1,4 @@
-方# 版本 v1.3.6 更新摘要
+﻿方# 版本 v1.3.6 更新摘要
 
 ## 發布日期
 2026-01-20
@@ -146,25 +146,25 @@ node test-send-leave-today.js http://localhost:10000
 
 #### 生產環境
 ```bash
-curl https://tai-xiang-backend.onrender.com/line/send_leave_today
+curl https://taixiang.onrender.com/line/send_leave_today
 ```
 
 #### PowerShell
 ```powershell
-Invoke-RestMethod -Uri "https://tai-xiang-backend.onrender.com/line/send_leave_today"
+Invoke-RestMethod -Uri "https://taixiang.onrender.com/line/send_leave_today"
 ```
 
 #### 定時排程（Windows）
 ```powershell
 # 每天早上 8:00 執行
 # 在工作排程器中設定執行此腳本
-Invoke-RestMethod -Uri "https://tai-xiang-backend.onrender.com/line/send_leave_today"
+Invoke-RestMethod -Uri "https://taixiang.onrender.com/line/send_leave_today"
 ```
 
 #### 定時排程（Linux Cron）
 ```bash
 # 每天早上 8:00 執行
-0 8 * * * curl https://tai-xiang-backend.onrender.com/line/send_leave_today
+0 8 * * * curl https://taixiang.onrender.com/line/send_leave_today
 ```
 
 ### 請假申請通知（待啟用）

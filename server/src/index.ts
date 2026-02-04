@@ -44,7 +44,7 @@ if (isProduction) {
 const corsOptions = {
   origin: isProduction 
     ? [
-        'https://tai-xiang-website.onrender.com',  // 主網站 URL
+        process.env.WEBSITE_URL || 'https://tai-xiang-website.onrender.com',  // 主網站 URL
         'http://localhost:5173',                   // 開發環境
         'http://localhost:3000'                    // 備用開發端口
       ]

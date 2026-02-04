@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 測試郵件備份功能
  * 
  * 使用方式:
@@ -6,7 +6,7 @@
  * 
  * 範例:
  *   node test-email-backup.js http://localhost:10000
- *   node test-email-backup.js https://tai-xiang-backend.onrender.com
+ *   node test-email-backup.js https://taixiang.onrender.com
  */
 
 const https = require('https');

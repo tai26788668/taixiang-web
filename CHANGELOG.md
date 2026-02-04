@@ -1,4 +1,4 @@
-# 泰鄉食品企業入口網站 - 版本更新記錄
+﻿# 泰鄉食品企業入口網站 - 版本更新記錄
 
 ## v3.0.0 (2026-01-06) - 🤖 LINE Bot 完整整合版本
 
@@ -55,13 +55,13 @@
 ### 🏗️ 系統架構 (維持 Plan A)
 ```
 服務 1: 主網站 (Render Static Site - 免費)
-├── https://tai-xiang-website.onrender.com/
+├── https://taixiang-website.onrender.com/
 
 服務 2: 後端系統 (Render Web Service - $7/月)
-├── https://tai-xiang-backend.onrender.com/leave_system
-├── https://tai-xiang-backend.onrender.com/api/*
-├── https://tai-xiang-backend.onrender.com/line/webhook ⭐ 新增
-└── https://tai-xiang-backend.onrender.com/line/health ⭐ 新增
+├── https://taixiang.onrender.com/leave_system
+├── https://taixiang.onrender.com/api/*
+├── https://taixiang.onrender.com/line/webhook ⭐ 新增
+└── https://taixiang.onrender.com/line/health ⭐ 新增
 ```
 
 ### 💰 成本效益 (維持不變)
@@ -155,13 +155,13 @@
 **Plan A 部署架構** (維持不變):
 ```
 服務 1: 主網站 (Render Static Site - 免費)
-├── https://tai-xiang-website.onrender.com/
+├── https://taixiang-website.onrender.com/
 └── 企業形象展示、產品介紹
 
 服務 2: 後端系統 (Render Web Service - $7/月)
-├── https://tai-xiang-backend.onrender.com/leave_system
-├── https://tai-xiang-backend.onrender.com/api/*
-├── https://tai-xiang-backend.onrender.com/line/webhook
+├── https://taixiang.onrender.com/leave_system
+├── https://taixiang.onrender.com/api/*
+├── https://taixiang.onrender.com/line/webhook
 └── 完整的後端功能 (請假系統 + API + LINE Bot)
 ```
 

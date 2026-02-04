@@ -1,4 +1,4 @@
-# 🚀 泰鄉食品系統使用指南 (方案 A - 分離部署)
+﻿# 🚀 泰鄉食品系統使用指南 (方案 A - 分離部署)
 
 ## 📋 可用腳本
 
@@ -49,9 +49,9 @@ cd line && cat .env
 - **LINE Bot Webhook**: http://localhost:10000/line/webhook
 
 ### **生產環境 (Render)**
-- **主網站**: https://tai-xiang-website.onrender.com
-- **LINE Bot Webhook**: https://tai-xiang-backend.onrender.com/line/webhook
-- **LINE Bot 健康檢查**: https://tai-xiang-backend.onrender.com/line/health
+- **主網站**: https://taixiang-website.onrender.com
+- **LINE Bot Webhook**: https://taixiang.onrender.com/line/webhook
+- **LINE Bot 健康檢查**: https://taixiang.onrender.com/line/health
 
 ## 🔄 **開發工作流程**
 

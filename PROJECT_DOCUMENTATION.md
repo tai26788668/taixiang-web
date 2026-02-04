@@ -1,4 +1,4 @@
-# 泰鄉食品企業入口網站 - 完整專案文件
+﻿# 泰鄉食品企業入口網站 - 完整專案文件
 
 ## 📋 專案概述
 
@@ -10,12 +10,12 @@
 本專案採用**分離部署架構**，將系統分為兩個獨立服務：
 
 #### 🌐 服務 1: 主網站 (Static Site - 免費)
-- **主網站**: `https://tai-xiang-website.onrender.com/`
+- **主網站**: `https://taixiang-website.onrender.com/`
 - **功能**: 企業形象展示、產品介紹、聯絡資訊
 
 #### 🤖 服務 2: LINE Bot 系統 (Web Service - $7/月)
-- **LINE Bot Webhook**: `https://tai-xiang-backend.onrender.com/line/webhook`
-- **健康檢查**: `https://tai-xiang-backend.onrender.com/line/health`
+- **LINE Bot Webhook**: `https://taixiang.onrender.com/line/webhook`
+- **健康檢查**: `https://taixiang.onrender.com/line/health`
 - **功能**: 完整的請假記錄查詢系統
 
 #### 🔒 Port 配置
@@ -420,12 +420,12 @@ npm run build
 ### 分離部署架構 (目前)
 ```
 服務 1: 主網站 (Render Static Site - 免費)
-├── https://tai-xiang-website.onrender.com/
+├── https://taixiang-website.onrender.com/
 └── 企業形象展示、產品介紹
 
 服務 2: LINE Bot 系統 (Render Web Service - $7/月)
-├── https://tai-xiang-backend.onrender.com/line/webhook
-├── https://tai-xiang-backend.onrender.com/line/health
+├── https://taixiang.onrender.com/line/webhook
+├── https://taixiang.onrender.com/line/health
 └── 完整的請假記錄查詢功能
 ```
 

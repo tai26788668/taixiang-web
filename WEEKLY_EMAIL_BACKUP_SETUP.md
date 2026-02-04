@@ -1,4 +1,4 @@
-# 每週郵件備份設定指南
+﻿# 每週郵件備份設定指南
 
 ## 功能概述
 
@@ -76,7 +76,7 @@
 
 1. **驗證 Gmail 設定**
    ```bash
-   curl https://tai-xiang-backend.onrender.com/api/email/verify-config
+   curl https://taixiang.onrender.com/api/email/verify-config
    ```
 
    預期回應：
@@ -90,7 +90,7 @@
 
 2. **手動測試發送郵件**
    ```bash
-   curl -X POST https://tai-xiang-backend.onrender.com/api/email/send-leave-record
+   curl -X POST https://taixiang.onrender.com/api/email/send-leave-record
    ```
 
    預期回應：
@@ -123,7 +123,7 @@
    ```
    Title: 泰祥請假系統週報
    
-   URL: https://tai-xiang-backend.onrender.com/api/email/send-leave-record
+   URL: https://taixiang.onrender.com/api/email/send-leave-record
    
    Schedule:
    - Every Monday (每週一)
