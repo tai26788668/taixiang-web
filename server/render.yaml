@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: tai-xiang-backend
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+    # 其他環境變數需要在 Render Dashboard 中手動設定
+    # 因為包含敏感資訊 (LINE tokens, Gmail passwords 等)
