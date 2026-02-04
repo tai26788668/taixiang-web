@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  base: '/', // 確保使用根路徑
   server: {
     port: 5173,
     host: true,
@@ -27,5 +28,7 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ['react', 'react-dom']
-  }
+  },
+  // 確保靜態資源正確處理
+  publicDir: 'public'
 })
