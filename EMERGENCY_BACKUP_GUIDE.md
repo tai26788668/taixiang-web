@@ -77,7 +77,7 @@ curl -H "User-Agent: TaiXiang-Emergency-Backup-Tool" \
 
 # Render 部署 (後端服務)
 curl -H "User-Agent: TaiXiang-Emergency-Backup-Tool" \
-     "https://taixiang.onrender.com/api/backup/status"
+     "https://taixiang-server.onrender.com/api/backup/status"
 ```
 
 2. **下載請假紀錄：**
@@ -90,7 +90,7 @@ curl -H "User-Agent: TaiXiang-Emergency-Backup-Tool" \
 # Render 部署 (後端服務)
 curl -H "User-Agent: TaiXiang-Emergency-Backup-Tool" \
      -o "leave-records-backup.csv" \
-     "https://taixiang.onrender.com/api/backup/emergency-download?file=leave-records"
+     "https://taixiang-server.onrender.com/api/backup/emergency-download?file=leave-records"
 ```
 
 3. **下載個人資料：**
@@ -103,7 +103,7 @@ curl -H "User-Agent: TaiXiang-Emergency-Backup-Tool" \
 # Render 部署 (後端服務)
 curl -H "User-Agent: TaiXiang-Emergency-Backup-Tool" \
      -o "personal-data-backup.csv" \
-     "https://taixiang.onrender.com/api/backup/emergency-download?file=personal-data"
+     "https://taixiang-server.onrender.com/api/backup/emergency-download?file=personal-data"
 ```
 
 ### 使用 PowerShell (Windows)
@@ -116,7 +116,7 @@ Invoke-RestMethod -Uri "http://localhost:10000/api/backup/status" -Headers $head
 
 # Render 部署 (後端服務)
 $headers = @{ "User-Agent" = "TaiXiang-Emergency-Backup-Tool" }
-Invoke-RestMethod -Uri "https://taixiang.onrender.com/api/backup/status" -Headers $headers
+Invoke-RestMethod -Uri "https://taixiang-server.onrender.com/api/backup/status" -Headers $headers
 ```
 
 2. **下載請假紀錄：**
@@ -127,7 +127,7 @@ Invoke-WebRequest -Uri "http://localhost:10000/api/backup/emergency-download?fil
 
 # Render 部署 (後端服務)
 $headers = @{ "User-Agent" = "TaiXiang-Emergency-Backup-Tool" }
-Invoke-WebRequest -Uri "https://taixiang.onrender.com/api/backup/emergency-download?file=leave-records" -Headers $headers -OutFile "leave-records-backup.csv"
+Invoke-WebRequest -Uri "https://taixiang-server.onrender.com/api/backup/emergency-download?file=leave-records" -Headers $headers -OutFile "leave-records-backup.csv"
 ```
 
 3. **下載個人資料：**
@@ -138,7 +138,7 @@ Invoke-WebRequest -Uri "http://localhost:10000/api/backup/emergency-download?fil
 
 # Render 部署 (後端服務)
 $headers = @{ "User-Agent" = "TaiXiang-Emergency-Backup-Tool" }
-Invoke-WebRequest -Uri "https://taixiang.onrender.com/api/backup/emergency-download?file=personal-data" -Headers $headers -OutFile "personal-data-backup.csv"
+Invoke-WebRequest -Uri "https://taixiang-server.onrender.com/api/backup/emergency-download?file=personal-data" -Headers $headers -OutFile "personal-data-backup.csv"
 ```
 
 ## 部署環境說明
@@ -149,7 +149,7 @@ Invoke-WebRequest -Uri "https://taixiang.onrender.com/api/backup/emergency-downl
 
 ### Render 雲端部署
 - **前端 URL**: `https://taixiang-website.onrender.com` (靜態網站)
-- **後端 URL**: `https://taixiang.onrender.com` (API 服務)
+- **後端 URL**: `https://taixiang-server.onrender.com` (API 服務)
 - **備份 API**: 使用後端 URL
 - **用途**: 生產環境
 - **注意**: 

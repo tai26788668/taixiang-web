@@ -1,61 +1,100 @@
 /**
- * Persistent Disk 初始化腳本
+ * 手動 Persistent Disk 初始化腳本
  * 
- * 此腳本會在首次部署時執行，將初始 CSV 資料複製到 Persistent Disk
- * 如果 Disk 中已有資料，則不會覆蓋
+ * 當自動初始化失敗時，可以手動執行此腳本
+ * 
+ * 使用方法:
+ *   node manual-init-disk.js
  */
 
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
 const PERSISTENT_DISK_PATH = process.env.PERSISTENT_DISK_PATH || '/mnt/data';
-const SOURCE_DATA_PATH = path.join(__dirname, '../../data');
+const SOURCE_DATA_PATH = path.join(__dirname, 'server/data');
 
 const FILES_TO_COPY = [
   '請假記錄.csv',
   '請假系統個人資料.csv'
 ];
 
-async function initPersistentDisk() {
+async function manualInitPersistentDisk() {
   console.log('='.repeat(60));
-  console.log('Persistent Disk 初始化');
+  console.log('手動 Persistent Disk 初始化');
   console.log('='.repeat(60));
   console.log(`Disk 路徑: ${PERSISTENT_DISK_PATH}`);
   console.log(`來源路徑: ${SOURCE_DATA_PATH}`);
-  console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+  console.log(`當前目錄: ${process.cwd()}`);
   console.log('');
 
-  // 檢查是否在生產環境且有設定 PERSISTENT_DISK_PATH
+  // 檢查環境變數
   if (!process.env.PERSISTENT_DISK_PATH) {
-    console.log('⏭️  PERSISTENT_DISK_PATH 未設定，跳過初始化');
-    console.log('   這是正常的本地開發行為');
-    console.log('='.repeat(60));
+    console.log('⚠️  PERSISTENT_DISK_PATH 環境變數未設定');
+    console.log('   請在 Render Dashboard 中設定: PERSISTENT_DISK_PATH=/mnt/data');
     return;
   }
 
   // 檢查 Persistent Disk 是否存在
   if (!fs.existsSync(PERSISTENT_DISK_PATH)) {
     console.error(`❌ Persistent Disk 不存在: ${PERSISTENT_DISK_PATH}`);
-    console.error('請確認 Render Dashboard 中已正確設定 Disk');
     console.error('');
-    console.error('設定步驟:');
-    console.error('1. 在 Render Dashboard 創建 Persistent Disk');
+    console.error('請確認:');
+    console.error('1. Render Dashboard 中已創建 Persistent Disk');
     console.error('2. Mount Path 設為: /mnt/data');
-    console.error('3. 設定環境變數: PERSISTENT_DISK_PATH=/mnt/data');
-    console.error('4. 重新部署服務');
-    process.exit(1);
+    console.error('3. Disk 狀態為 "Available"');
+    console.error('4. 服務已重新部署');
+    return;
   }
 
   console.log('✅ Persistent Disk 已掛載');
-  
+
   // 檢查來源資料目錄
   if (!fs.existsSync(SOURCE_DATA_PATH)) {
     console.error(`❌ 來源資料目錄不存在: ${SOURCE_DATA_PATH}`);
-    process.exit(1);
+    
+    // 嘗試其他可能的路徑
+    const alternativePaths = [
+      path.join(__dirname, 'data'),
+      path.join(process.cwd(), 'server/data'),
+      path.join(process.cwd(), 'data')
+    ];
+    
+    console.log('');
+    console.log('嘗試其他路徑:');
+    for (const altPath of alternativePaths) {
+      console.log(`  檢查: ${altPath}`);
+      if (fs.existsSync(altPath)) {
+        console.log(`  ✅ 找到: ${altPath}`);
+        SOURCE_DATA_PATH = altPath;
+        break;
+      } else {
+        console.log(`  ❌ 不存在`);
+      }
+    }
+    
+    if (!fs.existsSync(SOURCE_DATA_PATH)) {
+      console.error('');
+      console.error('❌ 找不到來源資料目錄');
+      return;
+    }
   }
-  
+
   console.log('✅ 來源資料目錄存在');
   console.log('');
+
+  // 列出來源目錄內容
+  try {
+    const sourceFiles = fs.readdirSync(SOURCE_DATA_PATH);
+    console.log('📁 來源目錄內容:');
+    sourceFiles.forEach(file => {
+      const filePath = path.join(SOURCE_DATA_PATH, file);
+      const stats = fs.statSync(filePath);
+      console.log(`   ${file} (${stats.size} bytes)`);
+    });
+    console.log('');
+  } catch (error) {
+    console.error('無法讀取來源目錄:', error);
+  }
 
   // 複製檔案
   let copiedCount = 0;
@@ -105,7 +144,7 @@ async function initPersistentDisk() {
   }
 
   console.log('='.repeat(60));
-  console.log('初始化完成');
+  console.log('手動初始化完成');
   console.log(`✅ 複製成功: ${copiedCount} 個檔案`);
   console.log(`⏭️  跳過: ${skippedCount} 個檔案`);
   if (errorCount > 0) {
@@ -116,7 +155,7 @@ async function initPersistentDisk() {
   // 列出 Persistent Disk 內容
   try {
     const diskFiles = fs.readdirSync(PERSISTENT_DISK_PATH);
-    console.log('📁 Persistent Disk 內容:');
+    console.log('📁 Persistent Disk 最終內容:');
     diskFiles.forEach(file => {
       const filePath = path.join(PERSISTENT_DISK_PATH, file);
       const stats = fs.statSync(filePath);
@@ -129,8 +168,8 @@ async function initPersistentDisk() {
   console.log('='.repeat(60));
 }
 
-// 執行初始化
-initPersistentDisk().catch(error => {
-  console.error('初始化失敗:', error);
+// 執行手動初始化
+manualInitPersistentDisk().catch(error => {
+  console.error('手動初始化失敗:', error);
   process.exit(1);
 });

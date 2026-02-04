@@ -40,7 +40,7 @@ cd server && npm install && npm run build
   - Start Command: `cd server && npm start`
 
 ### 5. LINE Bot 設置
-- Webhook URL: `https://taixiang.onrender.com/line/webhook`
+- Webhook URL: `https://taixiang-server.onrender.com/line/webhook`
 - 支援指令: `help?`, `list`, `list -a`, `list -d`, `list -d -a`
 
 ## 🧹 已清理的檔案

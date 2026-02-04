@@ -237,7 +237,7 @@ EACCES: permission denied
 # 下載請假記錄
 curl -H "User-Agent: TaiXiang-Emergency-Backup-Tool" \
      -o "backup-$(date +%Y%m%d).csv" \
-     "https://taixiang.onrender.com/api/backup/emergency-download?file=leave-records"
+     "https://taixiang-server.onrender.com/api/backup/emergency-download?file=leave-records"
 ```
 
 ### 方法 2：設定定時備份

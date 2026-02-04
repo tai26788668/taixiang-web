@@ -9,7 +9,7 @@
  * 
  * Examples:
  *   node test-send-leave-today.js http://localhost:10000
- *   node test-send-leave-today.js https://taixiang.onrender.com
+ *   node test-send-leave-today.js https://taixiang-server.onrender.com
  */
 
 const https = require('https');

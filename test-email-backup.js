@@ -6,7 +6,7 @@
  * 
  * 範例:
  *   node test-email-backup.js http://localhost:10000
- *   node test-email-backup.js https://taixiang.onrender.com
+ *   node test-email-backup.js https://taixiang-server.onrender.com
  */
 
 const https = require('https');

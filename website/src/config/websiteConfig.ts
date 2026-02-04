@@ -342,7 +342,7 @@ export const websiteConfig: WebsiteConfig = {
           { label: '產品', href: '#products' },
           { label: '線上產品', href: '#online-products' },
           { label: '聯絡我們', href: '#contact' },
-          { label: '員工專區', href: 'https://taixiang.onrender.com/leave_system', external: true }
+          { label: '員工專區', href: 'https://taixiang-server.onrender.com/leave_system', external: true }
         ]
       }
     ]
@@ -351,6 +351,6 @@ export const websiteConfig: WebsiteConfig = {
   // 方案 A 專用配置
   deployment: {
     plan: 'A',
-    backendUrl: 'https://taixiang.onrender.com'
+    backendUrl: 'https://taixiang-server.onrender.com'
   }
 }

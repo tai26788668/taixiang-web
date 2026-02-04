@@ -74,10 +74,10 @@ Invoke-RestMethod -Uri "http://localhost:10000/line/send_leave_today"
 
 ```bash
 # 使用 curl
-curl https://taixiang.onrender.com/line/send_leave_today
+curl https://taixiang-server.onrender.com/line/send_leave_today
 
 # 使用 PowerShell
-Invoke-RestMethod -Uri "https://taixiang.onrender.com/line/send_leave_today"
+Invoke-RestMethod -Uri "https://taixiang-server.onrender.com/line/send_leave_today"
 ```
 
 ## 回應格式
@@ -136,7 +136,7 @@ Invoke-RestMethod -Uri "https://taixiang.onrender.com/line/send_leave_today"
 
 1. 建立 PowerShell 腳本 `send-daily-leave.ps1`:
 ```powershell
-Invoke-RestMethod -Uri "https://taixiang.onrender.com/line/send_leave_today"
+Invoke-RestMethod -Uri "https://taixiang-server.onrender.com/line/send_leave_today"
 ```
 
 2. 在工作排程器中設定每日執行時間（例如：每天早上 8:00）
@@ -145,7 +145,7 @@ Invoke-RestMethod -Uri "https://taixiang.onrender.com/line/send_leave_today"
 
 ```bash
 # 每天早上 8:00 執行
-0 8 * * * curl https://taixiang.onrender.com/line/send_leave_today
+0 8 * * * curl https://taixiang-server.onrender.com/line/send_leave_today
 ```
 
 ### 雲端排程服務

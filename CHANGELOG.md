@@ -58,10 +58,10 @@
 ├── https://taixiang-website.onrender.com/
 
 服務 2: 後端系統 (Render Web Service - $7/月)
-├── https://taixiang.onrender.com/leave_system
-├── https://taixiang.onrender.com/api/*
-├── https://taixiang.onrender.com/line/webhook ⭐ 新增
-└── https://taixiang.onrender.com/line/health ⭐ 新增
+├── https://taixiang-server.onrender.com/leave_system
+├── https://taixiang-server.onrender.com/api/*
+├── https://taixiang-server.onrender.com/line/webhook ⭐ 新增
+└── https://taixiang-server.onrender.com/line/health ⭐ 新增
 ```
 
 ### 💰 成本效益 (維持不變)
@@ -159,9 +159,9 @@
 └── 企業形象展示、產品介紹
 
 服務 2: 後端系統 (Render Web Service - $7/月)
-├── https://taixiang.onrender.com/leave_system
-├── https://taixiang.onrender.com/api/*
-├── https://taixiang.onrender.com/line/webhook
+├── https://taixiang-server.onrender.com/leave_system
+├── https://taixiang-server.onrender.com/api/*
+├── https://taixiang-server.onrender.com/line/webhook
 └── 完整的後端功能 (請假系統 + API + LINE Bot)
 ```
 
