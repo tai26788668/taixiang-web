@@ -3,7 +3,7 @@
  * 使用 nodemailer 發送郵件
  */
 
-import nodemailer from 'nodemailer';
+import * as nodemailer from 'nodemailer';
 import fs from 'fs';
 import path from 'path';
 
