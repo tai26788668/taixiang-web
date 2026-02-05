@@ -215,7 +215,7 @@ app.get('/leave_system', (req, res, next) => {
         res.status(500).json({
           success: false,
           error: err.message,
-          code: err.code,
+          code: (err as any).code || 'UNKNOWN',
           timestamp: new Date().toISOString()
         });
       }
@@ -259,7 +259,7 @@ app.get('/leave_system/*', (req, res, next) => {
         res.status(500).json({
           success: false,
           error: err.message,
-          code: err.code,
+          code: (err as any).code || 'UNKNOWN',
           timestamp: new Date().toISOString()
         });
       }
