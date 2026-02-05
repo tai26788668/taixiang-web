@@ -103,16 +103,45 @@ echo "📦 步驟 4: 初始化 Persistent Disk..."
 echo "-" | tr '\n' '-' | head -c 60; echo ""
 
 if [ -n "$PERSISTENT_DISK_PATH" ]; then
-    echo "🔧 執行 Persistent Disk 初始化..."
-    node dist/scripts/init-persistent-disk.js
+    echo "🔧 檢查 Persistent Disk..."
     
-    if [ $? -ne 0 ]; then
-        echo "⚠️  Persistent Disk 初始化失敗，嘗試強制初始化..."
-        if [ -f "../force-init-disk.js" ]; then
-            node ../force-init-disk.js
+    # 檢查 Persistent Disk 是否存在
+    if [ ! -d "$PERSISTENT_DISK_PATH" ]; then
+        echo "❌ Persistent Disk 不存在: $PERSISTENT_DISK_PATH"
+        echo "   請在 Render Dashboard 中創建 Persistent Disk"
+    else
+        echo "✅ Persistent Disk 已掛載: $PERSISTENT_DISK_PATH"
+        
+        # 檢查並複製個人資料檔案
+        if [ ! -f "$PERSISTENT_DISK_PATH/請假系統個人資料.csv" ]; then
+            echo "📋 複製個人資料檔案到 Persistent Disk..."
+            if [ -f "dist/data/請假系統個人資料.csv" ]; then
+                cp "dist/data/請假系統個人資料.csv" "$PERSISTENT_DISK_PATH/"
+                echo "✅ 個人資料檔案複製完成"
+            else
+                echo "❌ 找不到來源檔案: dist/data/請假系統個人資料.csv"
+            fi
         else
-            echo "⚠️  找不到強制初始化腳本"
+            echo "⏭️  個人資料檔案已存在，跳過"
         fi
+        
+        # 檢查並複製請假記錄檔案
+        if [ ! -f "$PERSISTENT_DISK_PATH/請假記錄.csv" ]; then
+            echo "📋 複製請假記錄檔案到 Persistent Disk..."
+            if [ -f "dist/data/請假記錄.csv" ]; then
+                cp "dist/data/請假記錄.csv" "$PERSISTENT_DISK_PATH/"
+                echo "✅ 請假記錄檔案複製完成"
+            else
+                echo "❌ 找不到來源檔案: dist/data/請假記錄.csv"
+            fi
+        else
+            echo "⏭️  請假記錄檔案已存在，跳過"
+        fi
+        
+        # 列出 Persistent Disk 內容
+        echo ""
+        echo "📁 Persistent Disk 內容:"
+        ls -lh "$PERSISTENT_DISK_PATH/" || echo "無法列出目錄內容"
     fi
 else
     echo "⏭️  PERSISTENT_DISK_PATH 未設定，跳過初始化"
