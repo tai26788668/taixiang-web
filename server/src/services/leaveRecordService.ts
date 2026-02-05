@@ -36,31 +36,11 @@ function parseTimeWithDayMarker(timeStr: string): { time: string, isNextDay: boo
  * 處理請假記錄的CRUD操作和查詢功能
  */
 
-const LEAVE_RECORD_FILE = (() => {
-  // 測試環境
-  if (process.env.NODE_ENV === 'test') {
-    return path.join(__dirname, '../../test-data/請假記錄.csv');
-  }
-  
-  // 生產環境：優先使用 Persistent Disk，如果不存在則回退到 dist/data
-  if (process.env.PERSISTENT_DISK_PATH) {
-    const persistentPath = path.join(process.env.PERSISTENT_DISK_PATH, '請假記錄.csv');
-    const fs = require('fs');
-    
-    if (fs.existsSync(persistentPath)) {
-      console.log(`✅ 使用 Persistent Disk: ${persistentPath}`);
-      return persistentPath;
-    } else {
-      console.warn(`⚠️  Persistent Disk 檔案不存在: ${persistentPath}`);
-      console.warn(`   回退到本地 data 目錄`);
-    }
-  }
-  
-  // 回退到本地 data 目錄
-  const localPath = path.join(__dirname, '../../data/請假記錄.csv');
-  console.log(`📁 使用本地 data: ${localPath}`);
-  return localPath;
-})();
+const LEAVE_RECORD_FILE = process.env.NODE_ENV === 'test' 
+  ? path.join(__dirname, '../../test-data/請假記錄.csv')
+  : process.env.PERSISTENT_DISK_PATH 
+    ? path.join(process.env.PERSISTENT_DISK_PATH, '請假記錄.csv')
+    : path.join(__dirname, '../../data/請假記錄.csv');
 
 const LEAVE_RECORD_HEADERS = [
   { id: 'id', title: '記錄ID' },
