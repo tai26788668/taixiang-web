@@ -10,7 +10,8 @@
     "watch": "tsc --watch",
     "init-disk": "node dist/scripts/init-persistent-disk.js",
     "init-disk-dev": "ts-node src/scripts/init-persistent-disk.ts",
-    "postbuild": "npm run init-disk || echo 'Disk initialization failed or skipped'"
+    "force-init": "node ../force-init-disk.js",
+    "postbuild": "npm run init-disk || npm run force-init || echo 'Disk initialization failed'"
   },
   "dependencies": {
     "@line/bot-sdk": "^8.4.1",
