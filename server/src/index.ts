@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 
 // 載入環境變數
@@ -83,10 +84,44 @@ const staticOptions = {
 };
 
 // 請假系統靜態檔案路徑
-const leaveSystemDistPath = path.join(__dirname, '../../leave_system/dist');
+// 在 Render 部署環境中，檔案結構可能不同，需要檢查多個可能的路徑
+const possibleLeaveSystemPaths = [
+  path.join(__dirname, '../../leave_system/dist'),  // 本地開發
+  path.join(__dirname, '../leave_system/dist'),     // Render 部署可能路徑 1
+  path.join(__dirname, 'leave_system'),              // 複製到 dist 目錄中
+  path.join(process.cwd(), 'leave_system/dist'),    // Render 部署可能路徑 2
+  path.join(__dirname, '../../../leave_system/dist') // Render 部署可能路徑 3
+];
 
-console.log('📁 靜態檔案路徑:');
-console.log(`   請假系統: ${leaveSystemDistPath}`);
+let leaveSystemDistPath = '';
+let pathFound = false;
+
+console.log('📁 尋找請假系統靜態檔案路徑:');
+for (const testPath of possibleLeaveSystemPaths) {
+  console.log(`   檢查: ${testPath}`);
+  if (fs.existsSync(testPath)) {
+    const indexPath = path.join(testPath, 'index.html');
+    if (fs.existsSync(indexPath)) {
+      leaveSystemDistPath = testPath;
+      pathFound = true;
+      console.log(`   ✅ 找到: ${testPath}`);
+      break;
+    } else {
+      console.log(`   ❌ 目錄存在但缺少 index.html`);
+    }
+  } else {
+    console.log(`   ❌ 路徑不存在`);
+  }
+}
+
+if (!pathFound) {
+  console.error('❌ 找不到請假系統靜態檔案！');
+  console.error('   這可能導致 /leave_system 路由無法正常工作');
+  // 使用預設路徑，但會在訪問時顯示錯誤
+  leaveSystemDistPath = possibleLeaveSystemPaths[0];
+} else {
+  console.log(`✅ 使用路徑: ${leaveSystemDistPath}`);
+}
 
 // 提供請假系統前端靜態檔案
 app.use('/leave_system', express.static(leaveSystemDistPath, staticOptions));
@@ -152,32 +187,90 @@ app.use('/line', lineBotRoutes);
 
 // SPA 路由處理 - 請假系統
 app.get('/leave_system', (req, res, next) => {
+  if (!pathFound) {
+    return res.status(500).json({
+      success: false,
+      error: '請假系統靜態檔案未找到',
+      message: '請聯繫系統管理員',
+      timestamp: new Date().toISOString()
+    });
+  }
+
   try {
     const indexPath = path.join(leaveSystemDistPath, 'index.html');
+    
+    // 檢查檔案是否存在
+    if (!fs.existsSync(indexPath)) {
+      return res.status(500).json({
+        success: false,
+        error: `ENOENT: no such file or directory, stat '${indexPath}'`,
+        code: 'ENOENT',
+        timestamp: new Date().toISOString()
+      });
+    }
+    
     res.sendFile(indexPath, (err) => {
       if (err) {
         console.error('❌ 請假系統 SPA 錯誤:', err);
-        next(err);
+        res.status(500).json({
+          success: false,
+          error: err.message,
+          code: err.code,
+          timestamp: new Date().toISOString()
+        });
       }
     });
   } catch (error) {
     console.error('❌ 請假系統路由錯誤:', error);
-    next(error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : '未知錯誤',
+      timestamp: new Date().toISOString()
+    });
   }
 });
 
 app.get('/leave_system/*', (req, res, next) => {
+  if (!pathFound) {
+    return res.status(500).json({
+      success: false,
+      error: '請假系統靜態檔案未找到',
+      message: '請聯繫系統管理員',
+      timestamp: new Date().toISOString()
+    });
+  }
+
   try {
     const indexPath = path.join(leaveSystemDistPath, 'index.html');
+    
+    // 檢查檔案是否存在
+    if (!fs.existsSync(indexPath)) {
+      return res.status(500).json({
+        success: false,
+        error: `ENOENT: no such file or directory, stat '${indexPath}'`,
+        code: 'ENOENT',
+        timestamp: new Date().toISOString()
+      });
+    }
+    
     res.sendFile(indexPath, (err) => {
       if (err) {
         console.error('❌ 請假系統 SPA 錯誤:', err);
-        next(err);
+        res.status(500).json({
+          success: false,
+          error: err.message,
+          code: err.code,
+          timestamp: new Date().toISOString()
+        });
       }
     });
   } catch (error) {
     console.error('❌ 請假系統路由錯誤:', error);
-    next(error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : '未知錯誤',
+      timestamp: new Date().toISOString()
+    });
   }
 });
 
