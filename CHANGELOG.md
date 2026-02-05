@@ -1,5 +1,49 @@
 ﻿# 泰鄉食品企業入口網站 - 版本更新記錄
 
+## v3.0.1 (2026-02-05) - 🔧 部署修復版本
+
+### 🎯 版本重點
+**修復 Render 部署問題** - 解決前端檔案路徑和 Persistent Disk 初始化問題
+
+### 🔧 部署系統修復
+- **統一部署腳本**: 創建 `server/deploy.sh` 統一建置流程
+  - 自動建置前端 (`leave_system`)
+  - 編譯後端 TypeScript
+  - 複製前端檔案到後端 dist 目錄
+  - 初始化 Persistent Disk
+- **前端檔案路徑修復**: 解決 `ENOENT: no such file or directory` 錯誤
+  - 前端檔案現在正確複製到 `server/dist/leave_system/`
+  - 支援多個可能的檔案路徑檢測
+- **Persistent Disk 初始化改善**: 
+  - 改善 `force-init-disk.js` 錯誤處理
+  - 自動尋找多個可能的來源路徑
+  - 提供詳細的診斷資訊和備份功能
+- **TypeScript 編譯修復**: 修正 `Error.code` 類型錯誤
+  - 使用類型斷言 `(err as any).code`
+
+### 📚 文檔更新
+- **新增文檔**:
+  - `RENDER_DEPLOYMENT_SETUP.md` - 完整的 Render 部署設定指南
+  - `DEPLOYMENT_FIX_SUMMARY.md` - 部署問題修復摘要
+- **更新文檔**:
+  - 所有文檔中的後端 URL 從 `taixiang.onrender.com` 更新為 `taixiang-server.onrender.com`
+  - 更新 12 個文件，30+ 個位置
+
+### 🐛 Bug 修復
+- 修復前端檔案在 Render 部署環境中找不到的問題
+- 修復 Persistent Disk CSV 檔案未正確初始化的問題
+- 修復 TypeScript 編譯時的類型錯誤
+
+### 📊 影響的檔案
+- `server/deploy.sh` (新增)
+- `server/package.json` (更新 build 腳本)
+- `force-init-disk.js` (改善錯誤處理)
+- `RENDER_DEPLOYMENT_SETUP.md` (新增)
+- `DEPLOYMENT_FIX_SUMMARY.md` (新增)
+- 12 個文檔檔案（URL 更新）
+
+---
+
 ## v3.0.0 (2026-01-06) - 🤖 LINE Bot 完整整合版本
 
 ### 🎯 版本重點
