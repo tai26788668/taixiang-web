@@ -11,15 +11,15 @@ echo "-" | tr '\n' '-' | head -c 60; echo ""
 if [ -d "../leave_system" ]; then
     cd ../leave_system
     
-    # 檢查是否有 node_modules
-    if [ ! -d "node_modules" ]; then
-        echo "📥 安裝前端依賴..."
-        npm install
-        if [ $? -ne 0 ]; then
-            echo "❌ 前端依賴安裝失敗"
-            exit 1
-        fi
+    # 安裝前端依賴（總是執行以確保依賴完整）
+    echo "📥 安裝前端依賴..."
+    npm install --production=false
+    if [ $? -ne 0 ]; then
+        echo "❌ 前端依賴安裝失敗"
+        exit 1
     fi
+    
+    echo "✅ 前端依賴安裝完成"
     
     # 建置前端
     echo "🔨 建置前端..."
