@@ -9,7 +9,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PERSISTENT_DISK_PATH = process.env.PERSISTENT_DISK_PATH || '/mnt/data';
-const REQUIRED_FILES = ['請假記錄.csv', '請假系統個人資料.csv'];
+const REQUIRED_FILES = ['leave_records.csv', 'personal_data.csv'];
 
 async function checkPersistentDisk() {
   console.log('🔍 檢查 Persistent Disk 狀態...');

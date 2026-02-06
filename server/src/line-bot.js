@@ -128,8 +128,8 @@ function readLeaveRecords() {
     const records = [];
     // 在 Render 環境中，data 目錄會被複製到 dist 目錄下
     const csvPath = process.env.NODE_ENV === 'production' 
-      ? path.join(__dirname, 'data/請假記錄.csv')
-      : path.join(__dirname, '../data/請假記錄.csv');
+      ? path.join(__dirname, 'data/leave_records.csv')
+      : path.join(__dirname, '../data/leave_records.csv');
     
     // Check if file exists
     if (!fs.existsSync(csvPath)) {
@@ -709,8 +709,8 @@ router.get('/health', async (req, res) => {
   try {
     // 在 Render 環境中，data 目錄會被複製到 dist 目錄下
     const csvPath = process.env.NODE_ENV === 'production' 
-      ? path.join(__dirname, 'data/請假記錄.csv')
-      : path.join(__dirname, '../data/請假記錄.csv');
+      ? path.join(__dirname, 'data/leave_records.csv')
+      : path.join(__dirname, '../data/leave_records.csv');
     const csvExists = fs.existsSync(csvPath);
     
     healthCheck.dataSource = {

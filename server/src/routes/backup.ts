@@ -42,8 +42,8 @@ router.get('/emergency-download', async (req: Request, res: Response) => {
     console.log(`[BACKUP] 數據目錄路徑: ${dataDir}`);
     
     const filesToDownload = [
-      '請假記錄.csv',  // 修正：記錄 不是 紀錄
-      '請假系統個人資料.csv'
+      'leave_records.csv',
+      'personal_data.csv'
     ];
 
     // 檢查文件是否存在
@@ -83,11 +83,11 @@ router.get('/emergency-download', async (req: Request, res: Response) => {
 
     switch (fileType) {
       case 'leave-records':
-        targetFile = '請假記錄.csv';  // 修正：記錄 不是 紀錄
+        targetFile = 'leave_records.csv';
         downloadName = `leave-records-backup-${new Date().toISOString().split('T')[0]}.csv`;
         break;
       case 'personal-data':
-        targetFile = '請假系統個人資料.csv';
+        targetFile = 'personal_data.csv';
         downloadName = `personal-data-backup-${new Date().toISOString().split('T')[0]}.csv`;
         break;
       default:
@@ -174,8 +174,8 @@ router.get('/status', async (req: Request, res: Response) => {
     console.log(`[BACKUP] 數據目錄路徑: ${dataDir}`);
     
     const filesToCheck = [
-      '請假記錄.csv',  // 修正：記錄 不是 紀錄
-      '請假系統個人資料.csv'
+      'leave_records.csv',
+      'personal_data.csv'
     ];
 
     const fileStatus = filesToCheck.map(fileName => {

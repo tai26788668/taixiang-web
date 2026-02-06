@@ -24,8 +24,8 @@ const possibleSourcePaths = [
 ];
 
 const FILES_TO_COPY = [
-  '請假記錄.csv',
-  '請假系統個人資料.csv'
+  'leave_records.csv',
+  'personal_data.csv'
 ];
 
 async function forceInitPersistentDisk() {

@@ -37,10 +37,10 @@ function parseTimeWithDayMarker(timeStr: string): { time: string, isNextDay: boo
  */
 
 const LEAVE_RECORD_FILE = process.env.NODE_ENV === 'test' 
-  ? path.join(__dirname, '../../test-data/請假記錄.csv')
+  ? path.join(__dirname, '../../test-data/leave_records.csv')
   : process.env.PERSISTENT_DISK_PATH 
-    ? path.join(process.env.PERSISTENT_DISK_PATH, '請假記錄.csv')
-    : path.join(__dirname, '../../data/請假記錄.csv');
+    ? path.join(process.env.PERSISTENT_DISK_PATH, 'leave_records.csv')
+    : path.join(__dirname, '../../data/leave_records.csv');
 
 const LEAVE_RECORD_HEADERS = [
   { id: 'id', title: '記錄ID' },

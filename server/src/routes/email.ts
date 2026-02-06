@@ -23,8 +23,8 @@ router.post('/send-leave-record', async (req, res) => {
 
     // 取得 CSV 檔案路徑
     const csvFilePath = process.env.PERSISTENT_DISK_PATH
-      ? path.join(process.env.PERSISTENT_DISK_PATH, '請假記錄.csv')
-      : path.join(__dirname, '../../data/請假記錄.csv');
+      ? path.join(process.env.PERSISTENT_DISK_PATH, 'leave_records.csv')
+      : path.join(__dirname, '../../data/leave_records.csv');
 
     console.log(`發送郵件到: ${recipientEmail}`);
     console.log(`CSV 檔案路徑: ${csvFilePath}`);

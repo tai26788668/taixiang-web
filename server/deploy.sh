@@ -113,26 +113,26 @@ if [ -n "$PERSISTENT_DISK_PATH" ]; then
         echo "✅ Persistent Disk 已掛載: $PERSISTENT_DISK_PATH"
         
         # 檢查並複製個人資料檔案
-        if [ ! -f "$PERSISTENT_DISK_PATH/請假系統個人資料.csv" ]; then
+        if [ ! -f "$PERSISTENT_DISK_PATH/personal_data.csv" ]; then
             echo "📋 複製個人資料檔案到 Persistent Disk..."
-            if [ -f "dist/data/請假系統個人資料.csv" ]; then
-                cp "dist/data/請假系統個人資料.csv" "$PERSISTENT_DISK_PATH/"
+            if [ -f "dist/data/personal_data.csv" ]; then
+                cp "dist/data/personal_data.csv" "$PERSISTENT_DISK_PATH/"
                 echo "✅ 個人資料檔案複製完成"
             else
-                echo "❌ 找不到來源檔案: dist/data/請假系統個人資料.csv"
+                echo "❌ 找不到來源檔案: dist/data/personal_data.csv"
             fi
         else
             echo "⏭️  個人資料檔案已存在，跳過"
         fi
         
         # 檢查並複製請假記錄檔案
-        if [ ! -f "$PERSISTENT_DISK_PATH/請假記錄.csv" ]; then
+        if [ ! -f "$PERSISTENT_DISK_PATH/leave_records.csv" ]; then
             echo "📋 複製請假記錄檔案到 Persistent Disk..."
-            if [ -f "dist/data/請假記錄.csv" ]; then
-                cp "dist/data/請假記錄.csv" "$PERSISTENT_DISK_PATH/"
+            if [ -f "dist/data/leave_records.csv" ]; then
+                cp "dist/data/leave_records.csv" "$PERSISTENT_DISK_PATH/"
                 echo "✅ 請假記錄檔案複製完成"
             else
-                echo "❌ 找不到來源檔案: dist/data/請假記錄.csv"
+                echo "❌ 找不到來源檔案: dist/data/leave_records.csv"
             fi
         else
             echo "⏭️  請假記錄檔案已存在，跳過"

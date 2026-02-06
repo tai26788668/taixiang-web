@@ -14,8 +14,8 @@ const PERSISTENT_DISK_PATH = process.env.PERSISTENT_DISK_PATH || '/mnt/data';
 const SOURCE_DATA_PATH = path.join(__dirname, 'server/data');
 
 const FILES_TO_COPY = [
-  '請假記錄.csv',
-  '請假系統個人資料.csv'
+  'leave_records.csv',
+  'personal_data.csv'
 ];
 
 async function manualInitPersistentDisk() {
