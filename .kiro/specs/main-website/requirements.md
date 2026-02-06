@@ -99,3 +99,18 @@
 3. WHEN 使用者與互動元素互動 THEN 系統 SHALL 提供即時的視覺回饋
 4. WHEN 動畫播放 THEN 系統 SHALL 確保流暢度達到 60fps 且不影響效能
 5. WHEN 使用者偏好減少動畫 THEN 系統 SHALL 尊重系統的 "prefers-reduced-motion" 設定
+
+### 需求 8: 關於我們 Section 擴展
+
+**使用者故事:** 作為網站訪客，我想要在關於我們 section 中看到基礎介紹和詳細頁面，以便深入了解公司。
+
+#### 驗收標準
+
+1. WHEN 使用者滾動到關於我們 section THEN 系統 SHALL 顯示基礎介紹內容
+2. WHEN 使用者點擊「了解更多」按鈕 THEN 系統 SHALL 平滑切換到詳細介紹頁面
+3. WHEN 詳細頁面載入 THEN 系統 SHALL 顯示三張圖文卡片的網格佈局
+4. WHEN 使用者在桌面裝置上查看 THEN 系統 SHALL 以三欄網格顯示圖文卡片
+5. WHEN 使用者在平板裝置上查看 THEN 系統 SHALL 以兩欄網格顯示圖文卡片
+6. WHEN 使用者在手機裝置上查看 THEN 系統 SHALL 以單欄堆疊顯示圖文卡片
+7. WHEN 圖片載入 THEN 系統 SHALL 使用 LazyImage 組件實現延遲載入
+8. WHEN 管理員需要更新圖文內容 THEN 系統 SHALL 在 websiteConfig.ts 中提供配置選項

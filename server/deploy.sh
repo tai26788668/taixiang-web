@@ -112,36 +112,17 @@ if [ -n "$PERSISTENT_DISK_PATH" ]; then
     else
         echo "✅ Persistent Disk 已掛載: $PERSISTENT_DISK_PATH"
         
-        # 檢查並複製個人資料檔案
-        if [ ! -f "$PERSISTENT_DISK_PATH/personal_data.csv" ]; then
-            echo "📋 複製個人資料檔案到 Persistent Disk..."
-            if [ -f "dist/data/personal_data.csv" ]; then
-                cp "dist/data/personal_data.csv" "$PERSISTENT_DISK_PATH/"
-                echo "✅ 個人資料檔案複製完成"
-            else
-                echo "❌ 找不到來源檔案: dist/data/personal_data.csv"
-            fi
-        else
-            echo "⏭️  個人資料檔案已存在，跳過"
-        fi
-        
-        # 檢查並複製請假記錄檔案
-        if [ ! -f "$PERSISTENT_DISK_PATH/leave_records.csv" ]; then
-            echo "📋 複製請假記錄檔案到 Persistent Disk..."
-            if [ -f "dist/data/leave_records.csv" ]; then
-                cp "dist/data/leave_records.csv" "$PERSISTENT_DISK_PATH/"
-                echo "✅ 請假記錄檔案複製完成"
-            else
-                echo "❌ 找不到來源檔案: dist/data/leave_records.csv"
-            fi
-        else
-            echo "⏭️  請假記錄檔案已存在，跳過"
-        fi
-        
         # 列出 Persistent Disk 內容
         echo ""
         echo "📁 Persistent Disk 內容:"
         ls -lh "$PERSISTENT_DISK_PATH/" || echo "無法列出目錄內容"
+        
+        # 提醒：CSV 檔案需要手動上傳
+        echo ""
+        echo "⚠️  注意：CSV 資料檔案需要手動上傳到 Persistent Disk"
+        echo "   請使用 SSH 或 SCP 將以下檔案上傳到 $PERSISTENT_DISK_PATH/："
+        echo "   - personal_data.csv"
+        echo "   - leave_records.csv"
     fi
 else
     echo "⏭️  PERSISTENT_DISK_PATH 未設定，跳過初始化"
