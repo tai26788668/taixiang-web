@@ -126,10 +126,10 @@ function parseMessage(messageText) {
 function readLeaveRecords() {
   return new Promise((resolve, reject) => {
     const records = [];
-    // 在 Render 環境中，data 目錄會被複製到 dist 目錄下
-    const csvPath = process.env.NODE_ENV === 'production' 
-      ? path.join(__dirname, 'data/leave_records.csv')
-      : path.join(__dirname, '../data/leave_records.csv');
+    // 只從 Persistent Disk 讀取
+    const csvPath = process.env.NODE_ENV === 'test'
+      ? path.join(__dirname, '../test-data/leave_records.csv')
+      : path.join(process.env.PERSISTENT_DISK_PATH || '/mnt/data', 'leave_records.csv');
     
     // Check if file exists
     if (!fs.existsSync(csvPath)) {
@@ -707,10 +707,10 @@ router.get('/health', async (req, res) => {
   
   // Check CSV file accessibility
   try {
-    // 在 Render 環境中，data 目錄會被複製到 dist 目錄下
-    const csvPath = process.env.NODE_ENV === 'production' 
-      ? path.join(__dirname, 'data/leave_records.csv')
-      : path.join(__dirname, '../data/leave_records.csv');
+    // 只從 Persistent Disk 讀取
+    const csvPath = process.env.NODE_ENV === 'test'
+      ? path.join(__dirname, '../test-data/leave_records.csv')
+      : path.join(process.env.PERSISTENT_DISK_PATH || '/mnt/data', 'leave_records.csv');
     const csvExists = fs.existsSync(csvPath);
     
     healthCheck.dataSource = {
