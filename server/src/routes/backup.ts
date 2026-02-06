@@ -34,12 +34,19 @@ router.get('/emergency-download', async (req: Request, res: Response) => {
     const timestamp = new Date().toISOString();
     console.log(`[BACKUP] 緊急下載請求 - 時間: ${timestamp}, IP: ${req.ip}`);
 
-    // 定義要下載的文件 - 根據運行環境確定路徑
-    // __dirname 在編譯後是 server/dist/routes
-    // 所以 ../../data 指向 server/data
-    const dataDir = path.join(__dirname, '../../data');
-    console.log(`[BACKUP] __dirname: ${__dirname}`);
-    console.log(`[BACKUP] 數據目錄路徑: ${dataDir}`);
+    // 定義要下載的文件 - 優先使用 Persistent Disk
+    // 如果設定了 PERSISTENT_DISK_PATH，從 Persistent Disk 讀取
+    // 否則從 server/data 讀取
+    let dataDir: string;
+    if (process.env.PERSISTENT_DISK_PATH) {
+      dataDir = process.env.PERSISTENT_DISK_PATH;
+      console.log(`[BACKUP] 使用 Persistent Disk: ${dataDir}`);
+    } else {
+      // __dirname 在編譯後是 server/dist/routes
+      // 所以 ../../data 指向 server/data
+      dataDir = path.join(__dirname, '../../data');
+      console.log(`[BACKUP] 使用本地資料目錄: ${dataDir}`);
+    }
     
     const filesToDownload = [
       'leave_records.csv',
@@ -169,9 +176,15 @@ router.get('/status', async (req: Request, res: Response) => {
       });
     }
 
-    const dataDir = path.join(__dirname, '../../data');
-    console.log(`[BACKUP] __dirname: ${__dirname}`);
-    console.log(`[BACKUP] 數據目錄路徑: ${dataDir}`);
+    // 優先使用 Persistent Disk
+    let dataDir: string;
+    if (process.env.PERSISTENT_DISK_PATH) {
+      dataDir = process.env.PERSISTENT_DISK_PATH;
+      console.log(`[BACKUP] 使用 Persistent Disk: ${dataDir}`);
+    } else {
+      dataDir = path.join(__dirname, '../../data');
+      console.log(`[BACKUP] 使用本地資料目錄: ${dataDir}`);
+    }
     
     const filesToCheck = [
       'leave_records.csv',
