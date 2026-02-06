@@ -21,10 +21,8 @@ router.post('/send-leave-record', async (req, res) => {
     // 取得收件人 email（從環境變數或請求參數）
     const recipientEmail = process.env.BACKUP_EMAIL || 'tai26788668@gmail.com';
 
-    // 取得 CSV 檔案路徑
-    const csvFilePath = process.env.PERSISTENT_DISK_PATH
-      ? path.join(process.env.PERSISTENT_DISK_PATH, 'leave_records.csv')
-      : path.join(__dirname, '../../data/leave_records.csv');
+    // 取得 CSV 檔案路徑 - 只從 Persistent Disk 讀取
+    const csvFilePath = path.join(process.env.PERSISTENT_DISK_PATH || '/mnt/data', 'leave_records.csv');
 
     console.log(`發送郵件到: ${recipientEmail}`);
     console.log(`CSV 檔案路徑: ${csvFilePath}`);

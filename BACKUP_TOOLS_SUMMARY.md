@@ -31,8 +31,8 @@ $headers = @{ "User-Agent" = "TaiXiang-Emergency-Backup-Tool" }
 Invoke-RestMethod -Uri "https://taixiang-server.onrender.com/api/backup/status" -Headers $headers
 
 # 下載請假記錄
-$headers = @{ "User-Agent" = "TaiXiang-Emergency-Backup-Tool" }
-Invoke-WebRequest -Uri "https://taixiang-server.onrender.com/api/backup/emergency-download?file=leave-records" -Headers $headers -OutFile "leave-records-backup.csv"
+$headers = @{ "User-Agent" = "TaiXiang-Emergency-Backup-Tool" };
+Invoke-WebRequest -Uri "https://taixiang-server.onrender.com/api/backup/emergency-download?file=leave-records" -Headers $headers -OutFile "c:\leave-records-backup.csv"
 
 # 下載個人資料
 $headers = @{ "User-Agent" = "TaiXiang-Emergency-Backup-Tool" }
