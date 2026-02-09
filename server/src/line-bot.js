@@ -223,11 +223,11 @@ function formatResponse(records, responseType) {
     
     switch (responseType) {
       case 'future':
-        return `預計請假${name} ${leaveDate} ${startTime} ${endTime} ${leaveType} ${status}`;
+        return `預計請假: ${name} ${leaveDate} ${startTime} ${endTime} ${leaveType} ${status}`;
       case 'future-approved':
         return `預計請假(已簽核)${name} ${leaveDate} ${startTime} ${endTime} ${leaveType}`;
       case 'today':
-        return `今日請假${name} ${leaveDate} ${startTime} ${endTime} ${leaveType} ${status}`;
+        return `今日請假: ${name} ${leaveDate} ${startTime} ${endTime} ${leaveType} ${status}`;
       case 'today-approved':
         return `今日請假(已簽核)${name} ${leaveDate} ${startTime} ${endTime} ${leaveType}`;
       default:
