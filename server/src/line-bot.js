@@ -95,7 +95,7 @@ function verifySignature(body, signature) {
 /**
  * Parse user message and identify command type
  * @param {string} messageText - User message text
- * @returns {string} - Command type: 'help', 'leave_system', 'website', 'list', 'list -a', 'list -d', 'list -d -a', 'list -a -d', 'unknown'
+ * @returns {string} - Command type: 'help', 'leave_system', 'website', 'list', 'list -d', 'unknown'
  */
 function parseMessage(messageText) {
   const text = messageText.toLowerCase().trim();
@@ -106,10 +106,6 @@ function parseMessage(messageText) {
     return 'leave_system';
   } else if (text === '官網') {
     return 'website';
-  } else if (text === 'list -d -a' || text === 'list -a -d') {
-    return text; // Return the exact command for switch statement
-  } else if (text === 'list -a') {
-    return 'list -a';
   } else if (text === 'list -d') {
     return 'list -d';
   } else if (text === 'list') {
@@ -196,12 +192,12 @@ function filterRecordsByDate(records, filterType, targetDate) {
 /**
  * Format response message
  * @param {Array} records - Array of leave records
- * @param {string} responseType - Response type: 'help', 'leave_system', 'website', 'future', 'future-approved', 'today', 'today-approved'
+ * @param {string} responseType - Response type: 'help', 'leave_system', 'website', 'future', 'today'
  * @returns {string} - Formatted response message
  */
 function formatResponse(records, responseType) {
   if (responseType === 'help') {
-    return 'list -d -a //列出含當日以後請假 ;d當日請假;-a已簽核';
+    return 'list -d //列出含當日以後請假 ;d當日請假';
   }
   
   if (responseType === 'leave_system') {
@@ -219,17 +215,13 @@ function formatResponse(records, responseType) {
   }
   
   const formattedRecords = records.map(record => {
-    const { name, leaveDate, startTime, endTime, leaveType, status } = record;
+    const { name, leaveDate, startTime, endTime, leaveType } = record;
     
     switch (responseType) {
       case 'future':
-        return `預計請假: ${name} ${leaveDate} ${startTime} ${endTime} ${leaveType} ${status}`;
-      case 'future-approved':
-        return `預計請假(已簽核)${name} ${leaveDate} ${startTime} ${endTime} ${leaveType}`;
+        return `預計請假${name} ${leaveDate} ${startTime} ${endTime} ${leaveType}`;
       case 'today':
-        return `今日請假: ${name} ${leaveDate} ${startTime} ${endTime} ${leaveType} ${status}`;
-      case 'today-approved':
-        return `今日請假(已簽核)${name} ${leaveDate} ${startTime} ${endTime} ${leaveType}`;
+        return `預計請假${name} ${leaveDate} ${startTime} ${endTime} ${leaveType}`;
       default:
         return '';
     }
@@ -481,21 +473,10 @@ router.post('/webhook', async (req, res) => {
               responseType = 'future';
               console.log(`list 指令: 找到 ${filteredRecords.length} 筆未來請假記錄`);
               break;
-            case 'list -a':
-              filteredRecords = filterRecordsByDate(records, 'future-approved', today);
-              responseType = 'future-approved';
-              console.log(`list -a 指令: 找到 ${filteredRecords.length} 筆未來已簽核記錄`);
-              break;
             case 'list -d':
               filteredRecords = filterRecordsByDate(records, 'today', today);
               responseType = 'today';
               console.log(`list -d 指令: 找到 ${filteredRecords.length} 筆當日請假記錄`);
-              break;
-            case 'list -d -a':
-            case 'list -a -d':
-              filteredRecords = filterRecordsByDate(records, 'today-approved', today);
-              responseType = 'today-approved';
-              console.log(`list -d -a 指令: 找到 ${filteredRecords.length} 筆當日已簽核記錄`);
               break;
             default:
               console.warn(`未處理的指令: ${command}`);
