@@ -95,7 +95,7 @@ function verifySignature(body, signature) {
 /**
  * Parse user message and identify command type
  * @param {string} messageText - User message text
- * @returns {string} - Command type: 'help', 'leave_system', 'website', 'list', 'list -d', 'unknown'
+ * @returns {string} - Command type: 'help', 'leave_system', 'website', 'list', 'list -d', 'list -w', 'list -t', 'unknown'
  */
 function parseMessage(messageText) {
   const text = messageText.toLowerCase().trim();
@@ -106,6 +106,10 @@ function parseMessage(messageText) {
     return 'leave_system';
   } else if (text === '官網') {
     return 'website';
+  } else if (text === 'list -t') {
+    return 'list -t';
+  } else if (text === 'list -w') {
+    return 'list -w';
   } else if (text === 'list -d') {
     return 'list -d';
   } else if (text === 'list') {
@@ -141,6 +145,7 @@ function readLeaveRecords() {
           name: row['姓名'],
           leaveType: row['假別'],
           leaveDate: row['請假日期'],
+          applicationDateTime: row['申請日期時間'],
           startTime: row['開始時間'],
           endTime: row['結束時間'],
           status: row['簽核狀態']
@@ -166,13 +171,18 @@ function readLeaveRecords() {
 /**
  * Filter records by date and approval status
  * @param {Array} records - Array of leave records
- * @param {string} filterType - Filter type: 'future', 'future-approved', 'today', 'today-approved'
+ * @param {string} filterType - Filter type: 'future', 'future-approved', 'today', 'today-approved', 'week', 'temporary'
  * @param {string} targetDate - Target date in YYYY-MM-DD format
  * @returns {Array} - Filtered records
  */
 function filterRecordsByDate(records, filterType, targetDate) {
   return records.filter(record => {
     const recordDate = record.leaveDate;
+    
+    // 排除已退回的記錄
+    if (record.status === '已退回') {
+      return false;
+    }
     
     switch (filterType) {
       case 'future':
@@ -183,6 +193,23 @@ function filterRecordsByDate(records, filterType, targetDate) {
         return recordDate === targetDate;
       case 'today-approved':
         return recordDate === targetDate && record.status === '已審核';
+      case 'week': {
+        // 計算 7 天後的日期
+        const today = new Date(targetDate);
+        const weekLater = new Date(today);
+        weekLater.setDate(today.getDate() + 6); // 包含今天，所以是 +6
+        const weekLaterStr = weekLater.toISOString().split('T')[0];
+        return recordDate >= targetDate && recordDate <= weekLaterStr;
+      }
+      case 'temporary': {
+        // 臨時請假：申請日期時間的日期部分等於請假日期
+        if (!record.applicationDateTime) {
+          return false;
+        }
+        // 從 ISO 格式的日期時間中提取日期部分 (YYYY-MM-DD)
+        const applicationDate = record.applicationDateTime.split('T')[0];
+        return applicationDate === recordDate;
+      }
       default:
         return false;
     }
@@ -192,12 +219,12 @@ function filterRecordsByDate(records, filterType, targetDate) {
 /**
  * Format response message
  * @param {Array} records - Array of leave records
- * @param {string} responseType - Response type: 'help', 'leave_system', 'website', 'future', 'today'
+ * @param {string} responseType - Response type: 'help', 'leave_system', 'website', 'future', 'today', 'week', 'temporary'
  * @returns {string} - Formatted response message
  */
 function formatResponse(records, responseType) {
   if (responseType === 'help') {
-    return 'list -d //列出含當日以後請假 ;d當日請假';
+    return 'list -d //列出含當日以後請假 ;d當日請假;-w 7天內請假;-t 臨時請假';
   }
   
   if (responseType === 'leave_system') {
@@ -214,6 +241,7 @@ function formatResponse(records, responseType) {
     return '目前沒有符合條件的請假記錄';
   }
   
+  // 格式化記錄並去除重複
   const formattedRecords = records.map(record => {
     const { name, leaveDate, startTime, endTime, leaveType } = record;
     
@@ -221,13 +249,20 @@ function formatResponse(records, responseType) {
       case 'future':
         return `預計請假${name} ${leaveDate} ${startTime} ${endTime} ${leaveType}`;
       case 'today':
-        return `預計請假${name} ${leaveDate} ${startTime} ${endTime} ${leaveType}`;
+        return `預計(今日)請假${name} ${leaveDate} ${startTime} ${endTime} ${leaveType}`;
+      case 'week':
+        return `預計(未來七日內)請假${name} ${leaveDate} ${startTime} ${endTime} ${leaveType}`;
+      case 'temporary':
+        return `(今日)臨時請假${name} ${leaveDate} ${startTime} ${endTime} ${leaveType}`;
       default:
         return '';
     }
   });
   
-  return formattedRecords.join(';');
+  // 使用 Set 去除完全相同的記錄
+  const uniqueRecords = [...new Set(formattedRecords)];
+  
+  return uniqueRecords.join(';');
 }
 
 /**
@@ -477,6 +512,16 @@ router.post('/webhook', async (req, res) => {
               filteredRecords = filterRecordsByDate(records, 'today', today);
               responseType = 'today';
               console.log(`list -d 指令: 找到 ${filteredRecords.length} 筆當日請假記錄`);
+              break;
+            case 'list -w':
+              filteredRecords = filterRecordsByDate(records, 'week', today);
+              responseType = 'week';
+              console.log(`list -w 指令: 找到 ${filteredRecords.length} 筆 7 天內請假記錄`);
+              break;
+            case 'list -t':
+              filteredRecords = filterRecordsByDate(records, 'temporary', today);
+              responseType = 'temporary';
+              console.log(`list -t 指令: 找到 ${filteredRecords.length} 筆臨時請假記錄`);
               break;
             default:
               console.warn(`未處理的指令: ${command}`);

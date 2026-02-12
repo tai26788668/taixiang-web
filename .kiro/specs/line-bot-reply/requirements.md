@@ -46,7 +46,7 @@
 
 #### 驗收標準
 
-1. WHEN 用戶發送 "help?" THEN 系統 SHALL 回覆 "list -d -a //列出含當日以後請假 ;d當日請假;-a已簽核"
+1. WHEN 用戶發送 "help?" THEN 系統 SHALL 回覆 "list -d //列出含當日以後請假 ;d當日請假;-w 7天內請假;-t 臨時請假"
 2. WHEN 用戶發送其他訊息內容 THEN 系統 SHALL 不執行任何動作
 3. WHEN 訊息內容大小寫不同 THEN 系統 SHALL 正確識別並處理指令
 4. WHEN 系統處理指令 THEN 系統 SHALL 呼叫對應的函數
@@ -58,47 +58,55 @@
 
 #### 驗收標準
 
-1. WHEN 用戶發送 "list" THEN 系統 SHALL 讀取 server/data/請假記錄.csv
+1. WHEN 用戶發送 "list" THEN 系統 SHALL 讀取 /mnt/data/leave_records.csv
 2. WHEN 系統讀取 CSV 檔案 THEN 系統 SHALL 查詢請假日期等於或超過訊息當日的記錄
-3. WHEN 找到符合條件的記錄 THEN 系統 SHALL 格式化為 "預計請假"+姓名+" "+請假日期+" "+開始時間+" "+結束時間+" "+假別+" "+簽核狀態
-4. WHEN 有多筆記錄 THEN 系統 SHALL 用 ";" 分隔每筆記錄
-5. WHEN CSV 檔案讀取失敗 THEN 系統 SHALL 回覆錯誤訊息
+3. WHEN 系統查詢記錄 THEN 系統 SHALL 排除簽核狀態為「已退回」的記錄
+4. WHEN 找到符合條件的記錄 THEN 系統 SHALL 格式化為 "預計請假"+姓名+" "+請假日期+" "+開始時間+" "+結束時間+" "+假別
+5. WHEN 有多筆記錄 THEN 系統 SHALL 移除顯示資訊完全相同的重複記錄
+6. WHEN 有多筆記錄 THEN 系統 SHALL 用 ";" 分隔每筆記錄
+7. WHEN CSV 檔案讀取失敗 THEN 系統 SHALL 回覆錯誤訊息
 
-### 需求 5: list -a 指令處理
-
-**用戶故事:** 作為員工，我希望能透過 "list -a" 指令查詢當日以後已簽核的請假記錄，以便了解確定的請假安排。
-
-#### 驗收標準
-
-1. WHEN 用戶發送 "list -a" THEN 系統 SHALL 讀取 server/data/請假記錄.csv
-2. WHEN 系統讀取 CSV 檔案 THEN 系統 SHALL 查詢請假日期等於或超過訊息當日且簽核狀態等於"已簽核"的記錄
-3. WHEN 找到符合條件的記錄 THEN 系統 SHALL 格式化為 "預計請假(已簽核)"+姓名+" "+請假日期+" "+開始時間+" "+結束時間+" "+假別
-4. WHEN 有多筆記錄 THEN 系統 SHALL 用 ";" 分隔每筆記錄
-5. WHEN CSV 檔案讀取失敗 THEN 系統 SHALL 回覆錯誤訊息
-
-### 需求 6: list -d 指令處理
+### 需求 5: list -d 指令處理
 
 **用戶故事:** 作為員工，我希望能透過 "list -d" 指令查詢當日的請假記錄，以便了解今天的請假狀況。
 
 #### 驗收標準
 
-1. WHEN 用戶發送 "list -d" THEN 系統 SHALL 讀取 server/data/請假記錄.csv
+1. WHEN 用戶發送 "list -d" THEN 系統 SHALL 讀取 /mnt/data/leave_records.csv
 2. WHEN 系統讀取 CSV 檔案 THEN 系統 SHALL 查詢請假日期等於訊息當日的記錄
-3. WHEN 找到符合條件的記錄 THEN 系統 SHALL 格式化為 "今日請假"+姓名+" "+請假日期+" "+開始時間+" "+結束時間+" "+假別+" "+簽核狀態
-4. WHEN 有多筆記錄 THEN 系統 SHALL 用 ";" 分隔每筆記錄
-5. WHEN CSV 檔案讀取失敗 THEN 系統 SHALL 回覆錯誤訊息
+3. WHEN 系統查詢記錄 THEN 系統 SHALL 排除簽核狀態為「已退回」的記錄
+4. WHEN 找到符合條件的記錄 THEN 系統 SHALL 格式化為 "預計(今日)請假"+姓名+" "+請假日期+" "+開始時間+" "+結束時間+" "+假別
+5. WHEN 有多筆記錄 THEN 系統 SHALL 移除顯示資訊完全相同的重複記錄
+6. WHEN 有多筆記錄 THEN 系統 SHALL 用 ";" 分隔每筆記錄
+7. WHEN CSV 檔案讀取失敗 THEN 系統 SHALL 回覆錯誤訊息
 
-### 需求 7: list -d -a 和 list -a -d 指令處理
+### 需求 6: list -w 指令處理
 
-**用戶故事:** 作為員工，我希望能透過 "list -d -a" 或 "list -a -d" 指令查詢當日已簽核的請假記錄，以便了解今天確定的請假狀況。
+**用戶故事:** 作為員工，我希望能透過 "list -w" 指令查詢 7 天內的請假記錄，以便了解近期的請假安排。
 
 #### 驗收標準
 
-1. WHEN 用戶發送 "list -d -a" 或 "list -a -d" THEN 系統 SHALL 讀取 server/data/請假記錄.csv
-2. WHEN 系統讀取 CSV 檔案 THEN 系統 SHALL 查詢請假日期等於訊息當日且簽核狀態等於"已簽核"的記錄
-3. WHEN 找到符合條件的記錄 THEN 系統 SHALL 格式化為 "今日請假(已簽核)"+姓名+" "+請假日期+" "+開始時間+" "+結束時間+" "+假別
-4. WHEN 有多筆記錄 THEN 系統 SHALL 用 ";" 分隔每筆記錄
-5. WHEN CSV 檔案讀取失敗 THEN 系統 SHALL 回覆錯誤訊息
+1. WHEN 用戶發送 "list -w" THEN 系統 SHALL 讀取 /mnt/data/leave_records.csv
+2. WHEN 系統讀取 CSV 檔案 THEN 系統 SHALL 查詢請假日期在訊息當日起 7 天內的記錄（包含當日）
+3. WHEN 系統查詢記錄 THEN 系統 SHALL 排除簽核狀態為「已退回」的記錄
+4. WHEN 找到符合條件的記錄 THEN 系統 SHALL 格式化為 "預計(未來七日內)請假"+姓名+" "+請假日期+" "+開始時間+" "+結束時間+" "+假別
+5. WHEN 有多筆記錄 THEN 系統 SHALL 移除顯示資訊完全相同的重複記錄
+6. WHEN 有多筆記錄 THEN 系統 SHALL 用 ";" 分隔每筆記錄
+7. WHEN CSV 檔案讀取失敗 THEN 系統 SHALL 回覆錯誤訊息
+
+### 需求 7: list -t 指令處理
+
+**用戶故事:** 作為員工，我希望能透過 "list -t" 指令查詢臨時新增的請假記錄，以便了解當天臨時請假的狀況。
+
+#### 驗收標準
+
+1. WHEN 用戶發送 "list -t" THEN 系統 SHALL 讀取 /mnt/data/leave_records.csv
+2. WHEN 系統讀取 CSV 檔案 THEN 系統 SHALL 從申請日期時間欄位提取日期部分，並查詢申請日期等於請假日期的記錄（臨時請假）
+3. WHEN 系統查詢記錄 THEN 系統 SHALL 排除簽核狀態為「已退回」的記錄
+4. WHEN 找到符合條件的記錄 THEN 系統 SHALL 格式化為 "(今日)臨時請假"+姓名+" "+請假日期+" "+開始時間+" "+結束時間+" "+假別
+5. WHEN 有多筆記錄 THEN 系統 SHALL 移除顯示資訊完全相同的重複記錄
+6. WHEN 有多筆記錄 THEN 系統 SHALL 用 ";" 分隔每筆記錄
+7. WHEN CSV 檔案讀取失敗 THEN 系統 SHALL 回覆錯誤訊息
 
 ### 需求 8: CSV 檔案處理
 
@@ -106,11 +114,12 @@
 
 #### 驗收標準
 
-1. WHEN 系統讀取 server/data/請假記錄.csv THEN 系統 SHALL 解析 CSV 格式並提取所有欄位
-2. WHEN 解析請假記錄 THEN 系統 SHALL 識別姓名、假別、請假日期、開始時間、結束時間和簽核狀態欄位
+1. WHEN 系統讀取 /mnt/data/leave_records.csv THEN 系統 SHALL 解析 CSV 格式並提取所有欄位
+2. WHEN 解析請假記錄 THEN 系統 SHALL 識別姓名、假別、請假日期、申請日期時間、開始時間、結束時間和簽核狀態欄位
 3. WHEN 比較日期 THEN 系統 SHALL 使用當前系統日期作為基準
-4. WHEN 格式化回覆訊息 THEN 系統 SHALL 以指定格式顯示請假資訊
-5. WHEN CSV 格式錯誤 THEN 系統 SHALL 回覆錯誤訊息
+4. WHEN 處理申請日期時間 THEN 系統 SHALL 從 ISO 格式中提取日期部分進行比較
+5. WHEN 格式化回覆訊息 THEN 系統 SHALL 以指定格式顯示請假資訊
+6. WHEN CSV 格式錯誤 THEN 系統 SHALL 回覆錯誤訊息
 
 ### 需求 9: Reply API 整合
 
@@ -124,7 +133,7 @@
 4. WHEN Reply Token 已過期或無效 THEN 系統 SHALL 處理 API 錯誤回應
 5. WHEN 回覆訊息格式 THEN 系統 SHALL 符合 LINE Messaging API 規範
 
-### 需求 10: 程式架構要求
+### 需求 9: 程式架構要求
 
 **用戶故事:** 作為系統維護人員，我希望程式結構簡單明確，便於部署和維護。
 
