@@ -64,7 +64,8 @@
 4. WHEN 找到符合條件的記錄 THEN 系統 SHALL 格式化為 "預計請假"+姓名+" "+請假日期+" "+開始時間+" "+結束時間+" "+假別
 5. WHEN 有多筆記錄 THEN 系統 SHALL 移除顯示資訊完全相同的重複記錄
 6. WHEN 有多筆記錄 THEN 系統 SHALL 用 ";" 分隔每筆記錄
-7. WHEN CSV 檔案讀取失敗 THEN 系統 SHALL 回覆錯誤訊息
+7. WHEN 查無符合條件的記錄 THEN 系統 SHALL 回覆「無人預約(請假)」
+8. WHEN CSV 檔案讀取失敗 THEN 系統 SHALL 回覆錯誤訊息
 
 ### 需求 5: list -d 指令處理
 
@@ -78,7 +79,8 @@
 4. WHEN 找到符合條件的記錄 THEN 系統 SHALL 格式化為 "預計(今日)請假"+姓名+" "+請假日期+" "+開始時間+" "+結束時間+" "+假別
 5. WHEN 有多筆記錄 THEN 系統 SHALL 移除顯示資訊完全相同的重複記錄
 6. WHEN 有多筆記錄 THEN 系統 SHALL 用 ";" 分隔每筆記錄
-7. WHEN CSV 檔案讀取失敗 THEN 系統 SHALL 回覆錯誤訊息
+7. WHEN 查無符合條件的記錄 THEN 系統 SHALL 回覆「無人預約(今日請假)」
+8. WHEN CSV 檔案讀取失敗 THEN 系統 SHALL 回覆錯誤訊息
 
 ### 需求 6: list -w 指令處理
 
@@ -92,7 +94,8 @@
 4. WHEN 找到符合條件的記錄 THEN 系統 SHALL 格式化為 "預計(未來七日內)請假"+姓名+" "+請假日期+" "+開始時間+" "+結束時間+" "+假別
 5. WHEN 有多筆記錄 THEN 系統 SHALL 移除顯示資訊完全相同的重複記錄
 6. WHEN 有多筆記錄 THEN 系統 SHALL 用 ";" 分隔每筆記錄
-7. WHEN CSV 檔案讀取失敗 THEN 系統 SHALL 回覆錯誤訊息
+7. WHEN 查無符合條件的記錄 THEN 系統 SHALL 回覆「無人預約(未來7天內請假)」
+8. WHEN CSV 檔案讀取失敗 THEN 系統 SHALL 回覆錯誤訊息
 
 ### 需求 7: list -t 指令處理
 
@@ -106,7 +109,8 @@
 4. WHEN 找到符合條件的記錄 THEN 系統 SHALL 格式化為 "(今日)臨時請假"+姓名+" "+請假日期+" "+開始時間+" "+結束時間+" "+假別
 5. WHEN 有多筆記錄 THEN 系統 SHALL 移除顯示資訊完全相同的重複記錄
 6. WHEN 有多筆記錄 THEN 系統 SHALL 用 ";" 分隔每筆記錄
-7. WHEN CSV 檔案讀取失敗 THEN 系統 SHALL 回覆錯誤訊息
+7. WHEN 查無符合條件的記錄 THEN 系統 SHALL 不回應任何訊息
+8. WHEN CSV 檔案讀取失敗 THEN 系統 SHALL 回覆錯誤訊息
 
 ### 需求 8: CSV 檔案處理
 

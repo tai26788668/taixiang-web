@@ -238,7 +238,19 @@ function formatResponse(records, responseType) {
   }
   
   if (records.length === 0) {
-    return '目前沒有符合條件的請假記錄';
+    // 根據不同的查詢類型返回不同的無資料訊息
+    switch (responseType) {
+      case 'future':
+        return '無人預約(請假)';
+      case 'today':
+        return '無人預約(今日請假)';
+      case 'week':
+        return '無人預約(未來7天內請假)';
+      case 'temporary':
+        return null; // list -t 查無資料時不回應
+      default:
+        return '目前沒有符合條件的請假記錄';
+    }
   }
   
   // 格式化記錄並去除重複
@@ -530,6 +542,13 @@ router.post('/webhook', async (req, res) => {
           
           // Step 8: Format and send response (需求 9)
           const responseMessage = formatResponse(filteredRecords, responseType);
+          
+          // list -t 查無資料時不回應（responseMessage 為 null）
+          if (responseMessage === null) {
+            console.log(`${command} 指令: 查無資料，不回應訊息`);
+            continue;
+          }
+          
           console.log(`準備回覆訊息 (長度: ${responseMessage.length} 字元)`);
           
           await replyToLine(replyToken, responseMessage);
