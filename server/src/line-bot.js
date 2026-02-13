@@ -845,7 +845,7 @@ router.get('/health', async (req, res) => {
 
 /**
  * Leave Display Endpoint
- * 顯示今日和其他日期的請假記錄
+ * 顯示今日和未來七日內的請假記錄
  * Endpoint: GET /leave_display
  */
 router.get('/leave_display', async (req, res) => {
@@ -855,29 +855,90 @@ router.get('/leave_display', async (req, res) => {
     // 讀取請假記錄
     const records = await readLeaveRecords();
     
-    // 獲取今天的日期
-    const today = new Date();
-    const todayStr = today.toISOString().split('T')[0];
-    const displayDate = `${today.getFullYear()}/${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getDate()).padStart(2, '0')}`;
+    // 獲取今天的日期和時間
+    const now = new Date();
+    const todayStr = now.toISOString().split('T')[0];
     
-    // 過濾今日請假記錄（排除已退回）
-    const todayRecords = records.filter(record => {
-      return record.leaveDate === todayStr && record.status !== '已退回';
-    });
+    // 格式化當前日期時間 (yyyy/mm/dd hh:mm)
+    const currentDateTime = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
     
-    // 過濾其他日期請假記錄（未來日期，排除已退回）
-    const otherRecords = records.filter(record => {
-      return record.leaveDate > todayStr && record.status !== '已退回';
-    });
-    
-    // 格式化記錄
-    const formatRecord = (record) => {
-      return `${record.name} ${record.leaveDate} ${record.startTime} ${record.endTime} ${record.leaveType}`;
+    // 隱私保護：將姓名第二個字改成 "O"
+    const maskName = (name) => {
+      if (!name || name.length === 0) return name;
+      if (name.length === 1) return name;
+      return name[0] + 'O' + name.substring(2);
     };
     
-    // 去除重複記錄
-    const uniqueTodayRecords = [...new Set(todayRecords.map(formatRecord))];
-    const uniqueOtherRecords = [...new Set(otherRecords.map(formatRecord))];
+    // 過濾今日預約請假記錄（排除已退回和臨時請假）
+    const todayScheduledRecords = records.filter(record => {
+      if (record.leaveDate !== todayStr || record.status === '已退回') {
+        return false;
+      }
+      // 排除臨時請假（申請日期等於請假日期）
+      if (record.applicationDateTime) {
+        const applicationDate = record.applicationDateTime.split('T')[0];
+        if (applicationDate === record.leaveDate) {
+          return false;
+        }
+      }
+      return true;
+    });
+    
+    // 過濾今日臨時請假記錄（排除已退回）
+    const todayTemporaryRecords = records.filter(record => {
+      if (record.leaveDate !== todayStr || record.status === '已退回') {
+        return false;
+      }
+      // 只包含臨時請假（申請日期等於請假日期）
+      if (record.applicationDateTime) {
+        const applicationDate = record.applicationDateTime.split('T')[0];
+        return applicationDate === record.leaveDate;
+      }
+      return false;
+    });
+    
+    // 過濾未來七日內請假記錄（排除已退回）
+    const weekLater = new Date(now);
+    weekLater.setDate(now.getDate() + 6);
+    const weekLaterStr = weekLater.toISOString().split('T')[0];
+    
+    const weekRecords = records.filter(record => {
+      return record.leaveDate >= todayStr && 
+             record.leaveDate <= weekLaterStr && 
+             record.status !== '已退回';
+    });
+    
+    // 按姓名分組記錄
+    const groupByName = (records) => {
+      const grouped = {};
+      records.forEach(record => {
+        const maskedName = maskName(record.name);
+        if (!grouped[maskedName]) {
+          grouped[maskedName] = [];
+        }
+        grouped[maskedName].push({
+          date: record.leaveDate,
+          startTime: record.startTime,
+          endTime: record.endTime,
+          leaveType: record.leaveType
+        });
+      });
+      return grouped;
+    };
+    
+    // 格式化分組後的記錄為 HTML
+    const formatGroupedRecords = (grouped) => {
+      return Object.entries(grouped).map(([name, timeSlots]) => {
+        const timeSlotsHtml = timeSlots.map(slot => 
+          `<div class="time-slot">${slot.date} ${slot.startTime} ${slot.endTime} ${slot.leaveType}</div>`
+        ).join('');
+        return `<div class="record"><div class="name">${name}</div>${timeSlotsHtml}</div>`;
+      }).join('');
+    };
+    
+    const groupedTodayScheduled = groupByName(todayScheduledRecords);
+    const groupedTodayTemporary = groupByName(todayTemporaryRecords);
+    const groupedWeekRecords = groupByName(weekRecords);
     
     // 生成 HTML
     const html = `
@@ -908,6 +969,16 @@ router.get('/leave_display', async (req, res) => {
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+    .datetime {
+      font-size: 16px;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 20px;
+      text-align: center;
+      padding: 10px;
+      background-color: #ecf0f1;
+      border-radius: 4px;
+    }
     h2 {
       font-size: 18px;
       margin-bottom: 12px;
@@ -922,6 +993,17 @@ router.get('/leave_display', async (req, res) => {
     }
     .record:last-child {
       border-bottom: none;
+    }
+    .name {
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 4px;
+    }
+    .time-slot {
+      padding-left: 16px;
+      color: #555;
+      font-size: 13px;
+      line-height: 1.8;
     }
     .no-data {
       color: #999;
@@ -938,19 +1020,29 @@ router.get('/leave_display', async (req, res) => {
 </head>
 <body>
   <div class="container">
+    <div class="datetime">${currentDateTime}</div>
+    
     <div class="section">
-      <h2>今日(${displayDate})請假:</h2>
-      ${uniqueTodayRecords.length > 0 
-        ? uniqueTodayRecords.map(record => `<div class="record">${record}</div>`).join('')
+      <h2>今日(預約)請假:</h2>
+      ${Object.keys(groupedTodayScheduled).length > 0 
+        ? formatGroupedRecords(groupedTodayScheduled)
         : '<div class="no-data">無人預約(今日請假)</div>'
       }
     </div>
     
     <div class="section">
-      <h2>其他日期請假:</h2>
-      ${uniqueOtherRecords.length > 0
-        ? uniqueOtherRecords.map(record => `<div class="record">${record}</div>`).join('')
-        : '<div class="no-data">無人預約(請假)</div>'
+      <h2>今日(臨時)請假:</h2>
+      ${Object.keys(groupedTodayTemporary).length > 0
+        ? formatGroupedRecords(groupedTodayTemporary)
+        : '<div class="no-data">無人臨時請假</div>'
+      }
+    </div>
+    
+    <div class="section">
+      <h2>未來七日內(預約)請假:</h2>
+      ${Object.keys(groupedWeekRecords).length > 0
+        ? formatGroupedRecords(groupedWeekRecords)
+        : '<div class="no-data">無人預約(未來7天內請假)</div>'
       }
     </div>
   </div>
