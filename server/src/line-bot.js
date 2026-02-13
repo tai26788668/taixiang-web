@@ -843,6 +843,158 @@ router.get('/health', async (req, res) => {
   res.status(httpStatus).json(healthCheck);
 });
 
+/**
+ * Leave Display Endpoint
+ * 顯示今日和其他日期的請假記錄
+ * Endpoint: GET /leave_display
+ */
+router.get('/leave_display', async (req, res) => {
+  try {
+    console.log(`[${new Date().toISOString()}] 收到請假顯示請求`);
+    
+    // 讀取請假記錄
+    const records = await readLeaveRecords();
+    
+    // 獲取今天的日期
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0];
+    const displayDate = `${today.getFullYear()}/${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getDate()).padStart(2, '0')}`;
+    
+    // 過濾今日請假記錄（排除已退回）
+    const todayRecords = records.filter(record => {
+      return record.leaveDate === todayStr && record.status !== '已退回';
+    });
+    
+    // 過濾其他日期請假記錄（未來日期，排除已退回）
+    const otherRecords = records.filter(record => {
+      return record.leaveDate > todayStr && record.status !== '已退回';
+    });
+    
+    // 格式化記錄
+    const formatRecord = (record) => {
+      return `${record.name} ${record.leaveDate} ${record.startTime} ${record.endTime} ${record.leaveType}`;
+    };
+    
+    // 去除重複記錄
+    const uniqueTodayRecords = [...new Set(todayRecords.map(formatRecord))];
+    const uniqueOtherRecords = [...new Set(otherRecords.map(formatRecord))];
+    
+    // 生成 HTML
+    const html = `
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>請假記錄</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", sans-serif;
+      padding: 16px;
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h2 {
+      font-size: 18px;
+      margin-bottom: 12px;
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+    }
+    .record {
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+    .record:last-child {
+      border-bottom: none;
+    }
+    .no-data {
+      color: #999;
+      font-style: italic;
+      padding: 10px 0;
+    }
+    .section {
+      margin-bottom: 24px;
+    }
+    .section:last-child {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="section">
+      <h2>今日(${displayDate})請假:</h2>
+      ${uniqueTodayRecords.length > 0 
+        ? uniqueTodayRecords.map(record => `<div class="record">${record}</div>`).join('')
+        : '<div class="no-data">無人預約(今日請假)</div>'
+      }
+    </div>
+    
+    <div class="section">
+      <h2>其他日期請假:</h2>
+      ${uniqueOtherRecords.length > 0
+        ? uniqueOtherRecords.map(record => `<div class="record">${record}</div>`).join('')
+        : '<div class="no-data">無人預約(請假)</div>'
+      }
+    </div>
+  </div>
+</body>
+</html>
+    `;
+    
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(html);
+    
+  } catch (error) {
+    console.error('請假顯示錯誤:', error.message);
+    console.error('錯誤堆疊:', error.stack);
+    
+    res.status(500).send(`
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>錯誤</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    .error {
+      color: #e74c3c;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+  <div class="error">
+    <h2>系統錯誤</h2>
+    <p>無法讀取請假記錄，請稍後再試</p>
+  </div>
+</body>
+</html>
+    `);
+  }
+});
+
 // Export router and utility functions
 module.exports = router;
 module.exports.sendLeaveApplicationNotification = sendLeaveApplicationNotification;
