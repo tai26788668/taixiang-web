@@ -897,14 +897,17 @@ router.get('/leave_display', async (req, res) => {
       return false;
     });
     
-    // 過濾未來七日內請假記錄（排除已退回）
-    const weekLater = new Date(now);
-    weekLater.setDate(now.getDate() + 6);
-    const weekLaterStr = weekLater.toISOString().split('T')[0];
+    // 過濾明後天請假記錄（排除已退回）
+    const tomorrow = new Date(now);
+    tomorrow.setDate(now.getDate() + 1);
+    const tomorrowStr = tomorrow.toISOString().split('T')[0];
     
-    const weekRecords = records.filter(record => {
-      return record.leaveDate >= todayStr && 
-             record.leaveDate <= weekLaterStr && 
+    const dayAfterTomorrow = new Date(now);
+    dayAfterTomorrow.setDate(now.getDate() + 2);
+    const dayAfterTomorrowStr = dayAfterTomorrow.toISOString().split('T')[0];
+    
+    const nextTwoDaysRecords = records.filter(record => {
+      return (record.leaveDate === tomorrowStr || record.leaveDate === dayAfterTomorrowStr) && 
              record.status !== '已退回';
     });
     
@@ -938,7 +941,7 @@ router.get('/leave_display', async (req, res) => {
     
     const groupedTodayScheduled = groupByName(todayScheduledRecords);
     const groupedTodayTemporary = groupByName(todayTemporaryRecords);
-    const groupedWeekRecords = groupByName(weekRecords);
+    const groupedNextTwoDays = groupByName(nextTwoDaysRecords);
     
     // 生成 HTML
     const html = `
@@ -1039,10 +1042,10 @@ router.get('/leave_display', async (req, res) => {
     </div>
     
     <div class="section">
-      <h2>未來七日內(預約)請假:</h2>
-      ${Object.keys(groupedWeekRecords).length > 0
-        ? formatGroupedRecords(groupedWeekRecords)
-        : '<div class="no-data">無人預約(未來7天內請假)</div>'
+      <h2>明後天(預約)請假:</h2>
+      ${Object.keys(groupedNextTwoDays).length > 0
+        ? formatGroupedRecords(groupedNextTwoDays)
+        : '<div class="no-data">無人預約(明後天請假)</div>'
       }
     </div>
   </div>
